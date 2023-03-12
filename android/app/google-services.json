@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "21298091752",
+    "project_id": "buntokmelapor",
+    "storage_bucket": "buntokmelapor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21298091752:android:aeee7514129bf30e841b5d",
+        "android_client_info": {
+          "package_name": "com.briancodex.buntokmelapor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21298091752-8cj59eiviu44prhmgsab6kg90su88b40.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.briancodex.buntokmelapor",
+            "certificate_hash": "6b97e116f4bc6756cd9f7f2cf589d58034662731"
+          }
+        },
+        {
+          "client_id": "21298091752-iijkfdet58j7p031u0psm2gt428eqknd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVep_HHyeukeXNl4aoxTTbyaedguWCoU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21298091752-iijkfdet58j7p031u0psm2gt428eqknd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
