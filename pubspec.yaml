@@ -9,6 +9,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: 4.6.5
   firebase_core: 2.7.1
+  google_sign_in: 6.0.2
+  firebase_auth: 4.2.10
   flutter: 
     sdk: flutter
 
