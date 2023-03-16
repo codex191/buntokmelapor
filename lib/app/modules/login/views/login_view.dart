@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 import '../controllers/login_controller.dart';
 
@@ -9,16 +10,62 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('LoginView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'LoginView is working',
-          style: TextStyle(fontSize: 20),
+        body: SafeArea(
+            child: Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: Get.width * 0.7,
+              height: Get.width * 0.7,
+              child: Lottie.asset("assets/lottie/aduan.json"),
+            ),
+            SizedBox(
+              height: 100,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        "assets/logo/google.png",
+                        width: 45,
+                        height: 45,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      "Masuk dengan Google",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.red[800],
+                    padding: EdgeInsets.symmetric(
+                      vertical: 15,
+                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30))),
+              ),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Text("Buntok Melapor"),
+            Text("v.0.1")
+          ],
         ),
       ),
-    );
+    )));
   }
 }
