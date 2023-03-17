@@ -30,6 +30,13 @@ class MyApp extends StatelessWidget {
 
           //Jika berhasil, akan menampilkan halaman aplikasi
           if (snapshot.connectionState == ConnectionState.done) {
+            // return Obx(
+            //   () => GetMaterialApp(
+            //     title: "BuntokMelapor",
+            //     initialRoute: authC.isAuth.isTrue ? Routes.HOME : Routes.HOME,
+            //     getPages: AppPages.routes,
+            //   ),
+            // );
             return FutureBuilder(
               future: Future.delayed(Duration(seconds: 3)),
               builder: (context, snapshot) {

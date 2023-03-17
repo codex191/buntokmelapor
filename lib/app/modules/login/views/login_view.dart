@@ -19,12 +19,12 @@ class LoginView extends GetView<LoginController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: Get.width * 0.7,
-              height: Get.width * 0.7,
+              width: Get.width * 0.9,
+              height: Get.width * 0.9,
               child: Lottie.asset("assets/lottie/aduan.json"),
             ),
             SizedBox(
-              height: 100,
+              height: 90,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
