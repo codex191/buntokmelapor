@@ -5,12 +5,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'app/routes/app_pages.dart';
 import 'app/utils/splash_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   runApp(MyApp());
 }
 
@@ -30,13 +32,6 @@ class MyApp extends StatelessWidget {
 
           //Jika berhasil, akan menampilkan halaman aplikasi
           if (snapshot.connectionState == ConnectionState.done) {
-            // return Obx(
-            //   () => GetMaterialApp(
-            //     title: "BuntokMelapor",
-            //     initialRoute: authC.isAuth.isTrue ? Routes.HOME : Routes.HOME,
-            //     getPages: AppPages.routes,
-            //   ),
-            // );
             return FutureBuilder(
               future: Future.delayed(Duration(seconds: 3)),
               builder: (context, snapshot) {
@@ -53,7 +48,10 @@ class MyApp extends StatelessWidget {
                     ),
                   );
                 }
-                return SplashScreen();
+                return FutureBuilder(
+                  future: authC.firstInitialized(),
+                  builder: (context, snapshot) => SplashScreen(),
+                );
               },
             );
           }

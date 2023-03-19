@@ -67,17 +67,6 @@ class IntroductionView extends GetView<IntroductionController> {
       ),
       done: const Text("Done", style: TextStyle(fontWeight: FontWeight.w700)),
       onDone: () => Get.offAllNamed(Routes.LOGIN),
-      onSkip: () {
-        // On Skip button pressed
-      },
-      dotsDecorator: DotsDecorator(
-        size: const Size.square(10.0),
-        activeSize: const Size(20.0, 10.0),
-        color: Colors.black26,
-        spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-        activeShape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
-      ),
     ));
   }
 }
