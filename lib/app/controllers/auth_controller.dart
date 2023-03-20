@@ -1,4 +1,5 @@
 import 'package:buntokmelapor/app/routes/app_pages.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -10,6 +11,8 @@ class AuthController extends GetxController {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _currentUser;
   UserCredential? userCredential;
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> firstInitialized() async {
     await autoLogin().then((value) {
@@ -83,6 +86,15 @@ class AuthController extends GetxController {
           box.remove('skipIntro');
         }
         box.write('skipIntro', true);
+
+        // Memasukan data user ke firebase
+        CollectionReference users = firestore.collection('users');
+        users.doc(_currentUser!.email).set({
+          "uid": userCredential!.user!.uid,
+          "name": _currentUser!.displayName,
+          "email": _currentUser!.email,
+          "photoUrl": _currentUser!.photoUrl,
+        });
 
         isAuth.value = true;
         Get.offAllNamed(Routes.HOME);
