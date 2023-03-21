@@ -11,7 +11,7 @@ class SplashScreen extends StatelessWidget {
           child: Container(
             width: Get.width * 0.75,
             height: Get.height * 0.75,
-            color: Colors.amber,
+            // color: Colors.amber,
             child: Lottie.asset("assets/lottie/welcome.json"),
           ),
         ),

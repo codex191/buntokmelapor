@@ -20,18 +20,34 @@ class HomeView extends GetView<HomeController> {
         elevation: 4,
         leading: Padding(
           padding: const EdgeInsets.all(12),
-          child: Image.asset('assets/LogoKominfoTanpaTeks.png'),
+          child: Image.asset('assets/logo/LogoKominfoTanpaTeks.png'),
         ),
       ),
       endDrawer: Drawer(
         child: Column(
           children: [
             UserAccountsDrawerHeader(
-              // currentAccountPicture: CircleAvatar(
-              //   backgroundImage: Image.network(authC.user.photoUrl!),
-              // ),
-              accountName: Text("test@gmail.com"),
-              accountEmail: Text("test@gmail.com"),
+              currentAccountPicture: Container(
+                margin: EdgeInsets.all(15),
+                width: 250,
+                height: 175,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(200),
+                  child: authC.user.photoUrl == "noimage"
+                      ? Image.asset(
+                          "assets/logo/LogoKominfoTanpaTeks.png",
+                          fit: BoxFit.fill,
+                        )
+                      : Image.network(
+                          authC.user.photoUrl!,
+                          fit: BoxFit.fill,
+                          height: 250,
+                          width: 250,
+                        ),
+                ),
+              ),
+              accountName: Text("${authC.user.name}"),
+              accountEmail: Text("${authC.user.email}"),
             ),
             ListTile(
               leading: const Icon(Icons.face),
