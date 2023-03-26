@@ -52,6 +52,7 @@ class HomeView extends GetView<HomeController> {
             ListTile(
               leading: const Icon(Icons.face),
               title: const Text('Profil Anda'),
+              onTap: () => Get.toNamed(Routes.PROFILE),
             ),
             ListTile(
               leading: const Icon(Icons.logout),

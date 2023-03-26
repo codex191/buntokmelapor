@@ -1,23 +1,20 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ChatController extends GetxController {
   //TODO: Implement ChatController
 
-  final count = 0.obs;
+  late TextEditingController chatC;
+
   @override
   void onInit() {
+    chatC = TextEditingController();
     super.onInit();
   }
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void onClose() {
+    chatC.dispose();
     super.onClose();
   }
-
-  void increment() => count.value++;
 }
