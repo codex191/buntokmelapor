@@ -1,11 +1,19 @@
 import 'package:get/get.dart';
 
+import '../modules/aduan_page/bindings/aduan_page_binding.dart';
+import '../modules/aduan_page/views/aduan_page_view.dart';
+import '../modules/change_profile/bindings/change_profile_binding.dart';
+import '../modules/change_profile/views/change_profile_view.dart';
+import '../modules/chat/bindings/chat_binding.dart';
+import '../modules/chat/views/chat_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/introduction/bindings/introduction_binding.dart';
 import '../modules/introduction/views/introduction_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/pertanyaan/bindings/pertanyaan_binding.dart';
+import '../modules/pertanyaan/views/pertanyaan_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 
@@ -34,6 +42,26 @@ class AppPages {
       name: _Paths.PROFILE,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.PERTANYAAN,
+      page: () => const PertanyaanView(),
+      binding: PertanyaanBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADUAN_PAGE,
+      page: () => const AduanPageView(),
+      binding: AduanPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHANGE_PROFILE,
+      page: () => ChangeProfileView(),
+      binding: ChangeProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT,
+      page: () => const ChatView(),
+      binding: ChatBinding(),
     ),
   ];
 }

@@ -1,7 +1,8 @@
-import 'package:buntokmelapor/app/data/models/user_model.dart';
+import 'package:buntokmelapor/app/data/models/users_model.dart';
 import 'package:buntokmelapor/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,7 +14,7 @@ class AuthController extends GetxController {
   GoogleSignInAccount? _currentUser;
   UserCredential? userCredential;
 
-  UserModel user = UserModel();
+  var user = UsersModel().obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -64,7 +65,7 @@ class AuthController extends GetxController {
         // Memasukan data user ke firebase
         CollectionReference users = firestore.collection('users');
 
-        users.doc(_currentUser!.email).update({
+        await users.doc(_currentUser!.email).update({
           "lasSignIn":
               userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
         });
@@ -72,14 +73,7 @@ class AuthController extends GetxController {
         final currUser = await users.doc(_currentUser!.email).get();
         final currUserData = currUser.data() as Map<String, dynamic>;
 
-        user = UserModel(
-          name: currUserData["name"],
-          email: currUserData["email"],
-          photoUrl: currUserData["photoUrl"],
-          creationTime: currUserData["creationTime"],
-          lastSignIn: currUserData["lastSignIn"],
-          updatedTime: currUserData["updatedTime"],
-        );
+        user(UsersModel.fromJson(currUserData));
 
         return true;
       }
@@ -132,7 +126,7 @@ class AuthController extends GetxController {
         final checkuser = await users.doc(_currentUser!.email).get();
 
         if (checkuser.data() == null) {
-          users.doc(_currentUser!.email).set({
+          await users.doc(_currentUser!.email).set({
             "uid": userCredential!.user!.uid,
             "name": _currentUser!.displayName,
             "email": _currentUser!.email,
@@ -142,9 +136,10 @@ class AuthController extends GetxController {
             "lasSignIn": userCredential!.user!.metadata.lastSignInTime!
                 .toIso8601String(),
             "updatedTime": DateTime.now().toIso8601String(),
+            "chats": []
           });
         } else {
-          users.doc(_currentUser!.email).update({
+          await users.doc(_currentUser!.email).update({
             "lasSignIn": userCredential!.user!.metadata.lastSignInTime!
                 .toIso8601String(),
           });
@@ -153,14 +148,7 @@ class AuthController extends GetxController {
         final currUser = await users.doc(_currentUser!.email).get();
         final currUserData = currUser.data() as Map<String, dynamic>;
 
-        user = UserModel(
-          name: currUserData["name"],
-          email: currUserData["email"],
-          photoUrl: currUserData["photoUrl"],
-          creationTime: currUserData["creationTime"],
-          lastSignIn: currUserData["lastSignIn"],
-          updatedTime: currUserData["updatedTime"],
-        );
+        user(UsersModel.fromJson(currUserData));
 
         isAuth.value = true;
         Get.offAllNamed(Routes.HOME);
@@ -178,5 +166,32 @@ class AuthController extends GetxController {
     await _googleSignIn.signOut();
 
     Get.offAllNamed(Routes.LOGIN);
+  }
+
+  // UNTUK PROFILE
+  void changeProfile(String name) {
+    final date = DateTime.now().toIso8601String();
+    CollectionReference users = firestore.collection('users');
+
+    users.doc(_currentUser!.email).update({
+      "name": name,
+      "lasSignIn":
+          userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+      "updateTime": date,
+    });
+
+    // update Model
+    user.update((user) {
+      user!.name = name;
+      user.lastSignIn =
+          userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
+      user.updatedTime = date;
+    });
+
+    user.refresh();
+    Get.defaultDialog(
+      title: "Update Berhasil",
+      middleText: "Berhasil update profile",
+    );
   }
 }

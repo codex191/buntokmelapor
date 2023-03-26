@@ -33,21 +33,21 @@ class HomeView extends GetView<HomeController> {
                 height: 175,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(200),
-                  child: authC.user.photoUrl == "noimage"
+                  child: authC.user.value.photoUrl! == "noimage"
                       ? Image.asset(
                           "assets/logo/LogoKominfoTanpaTeks.png",
                           fit: BoxFit.fill,
                         )
                       : Image.network(
-                          authC.user.photoUrl!,
+                          authC.user.value.photoUrl!,
                           fit: BoxFit.fill,
                           height: 250,
                           width: 250,
                         ),
                 ),
               ),
-              accountName: Text("${authC.user.name}"),
-              accountEmail: Text("${authC.user.email}"),
+              accountName: Obx(() => Text("${authC.user.value.name}")),
+              accountEmail: Obx(() => Text("${authC.user.value.email}")),
             ),
             ListTile(
               leading: const Icon(Icons.face),
@@ -80,8 +80,8 @@ class HomeView extends GetView<HomeController> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Lapor! Palangka Raya"),
-                    Text("v.1.0.0"),
+                    Text("Buntok Melapor"),
+                    Text("v.0.0.1"),
                   ]),
             ),
             const SizedBox(
@@ -132,7 +132,9 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed(Routes.CHAT);
+        },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.help_rounded),
       ),
