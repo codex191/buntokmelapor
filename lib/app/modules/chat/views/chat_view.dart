@@ -10,7 +10,10 @@ class ChatView extends GetView<ChatController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Get.back(),
+        ),
         title: const Text('Admin Bunlapor'),
         centerTitle: true,
       ),
@@ -34,7 +37,7 @@ class ChatView extends GetView<ChatController> {
             margin: EdgeInsets.only(bottom: context.mediaQueryPadding.bottom),
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             width: Get.width,
-            color: Colors.amber,
+            //color: Colors.amber,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -106,7 +109,7 @@ class ItemChat extends StatelessWidget {
                         topRight: Radius.circular(15),
                         bottomRight: Radius.circular(15),
                       )),
-            color: Colors.blueAccent,
+            //color: Colors.blueAccent,
             padding: EdgeInsets.all(15),
             child: Text(
               "Halo Admin",
