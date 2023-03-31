@@ -6,7 +6,7 @@ class UsersModel {
   String? creationTime;
   String? lastSignIn;
   String? updatedTime;
-  List<Chats>? chats;
+  List<ChatUser>? chats;
 
   UsersModel(
       {this.uid,
@@ -27,9 +27,9 @@ class UsersModel {
     lastSignIn = json['lastSignIn'];
     updatedTime = json['updatedTime'];
     if (json['chats'] != null) {
-      chats = <Chats>[];
+      chats = <ChatUser>[];
       json['chats'].forEach((v) {
-        chats?.add(Chats.fromJson(v));
+        chats?.add(ChatUser.fromJson(v));
       });
     }
   }
@@ -50,14 +50,14 @@ class UsersModel {
   }
 }
 
-class Chats {
+class ChatUser {
   String? connection;
   String? chatId;
   String? lastTime;
 
-  Chats({this.connection, this.chatId, this.lastTime});
+  ChatUser({this.connection, this.chatId, this.lastTime});
 
-  Chats.fromJson(Map<String, dynamic> json) {
+  ChatUser.fromJson(Map<String, dynamic> json) {
     connection = json['connection'];
     chatId = json['chat_id'];
     lastTime = json['lastTime'];

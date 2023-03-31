@@ -2,7 +2,6 @@ import 'package:buntokmelapor/app/data/models/users_model.dart';
 import 'package:buntokmelapor/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -193,5 +192,45 @@ class AuthController extends GetxController {
       title: "Update Berhasil",
       middleText: "Berhasil update profile",
     );
+  }
+
+  // Untuk Chat
+  void addNewConnection(String friendEmail) async {
+    CollectionReference chats = firestore.collection('chats');
+    String date = DateTime.now().toIso8601String();
+
+    final newChatDoc = await chats.add({
+      "connection": [
+        _currentUser!.email,
+        friendEmail,
+      ],
+      "total_chats": 0,
+      "total_read": 0,
+      "total_unread": 0,
+      "chat": [],
+      "lastTime": date,
+    });
+
+    CollectionReference users = firestore.collection('users');
+
+    users.doc(_currentUser!.email).update({
+      "chats": [
+        {
+          "connection": friendEmail,
+          "chat_id": newChatDoc.id,
+          "lasttime": date,
+        }
+      ]
+    });
+
+    user.update((user) {
+      user!.chats = [
+        ChatUser(chatId: newChatDoc.id, connection: friendEmail, lastTime: date)
+      ];
+    });
+
+    user.refresh();
+
+    Get.toNamed(Routes.CHAT);
   }
 }

@@ -9,6 +9,7 @@ import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   final authC = Get.find<AuthController>();
+  var friendEmail = "codexgaming191@gmail.com";
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -134,7 +135,7 @@ class HomeView extends GetView<HomeController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed(Routes.CHAT);
+          authC.addNewConnection(friendEmail);
         },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.help_rounded),
