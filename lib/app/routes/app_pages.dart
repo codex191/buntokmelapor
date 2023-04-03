@@ -34,7 +34,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.INTRODUCTION,
-      page: () => const IntroductionView(),
+      page: () => IntroductionView(),
       binding: IntroductionBinding(),
     ),
     GetPage(
@@ -44,17 +44,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PROFILE,
-      page: () => const ProfileView(),
+      page: () => ProfileView(),
       binding: ProfileBinding(),
     ),
     GetPage(
       name: _Paths.PERTANYAAN,
-      page: () => const PertanyaanView(),
+      page: () => PertanyaanView(),
       binding: PertanyaanBinding(),
     ),
     GetPage(
       name: _Paths.ADUAN_PAGE,
-      page: () => const AduanPageView(),
+      page: () => AduanPageView(),
       binding: AduanPageBinding(),
     ),
     GetPage(
@@ -64,17 +64,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CHAT,
-      page: () => const ChatView(),
+      page: () => ChatView(),
       binding: ChatBinding(),
     ),
     GetPage(
       name: _Paths.HOME_ADMIN,
-      page: () => const HomeAdminView(),
+      page: () => HomeAdminView(),
       binding: HomeAdminBinding(),
     ),
     GetPage(
       name: _Paths.ADMIN_CHAT,
-      page: () => const AdminChatView(),
+      page: () => AdminChatView(),
       binding: AdminChatBinding(),
     ),
   ];
