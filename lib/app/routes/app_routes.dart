@@ -11,6 +11,8 @@ abstract class Routes {
   static const ADUAN_PAGE = _Paths.ADUAN_PAGE;
   static const CHANGE_PROFILE = _Paths.CHANGE_PROFILE;
   static const CHAT = _Paths.CHAT;
+  static const HOME_ADMIN = _Paths.HOME_ADMIN;
+  static const ADMIN_CHAT = _Paths.ADMIN_CHAT;
 }
 
 abstract class _Paths {
@@ -23,4 +25,6 @@ abstract class _Paths {
   static const ADUAN_PAGE = '/aduan-page';
   static const CHANGE_PROFILE = '/change-profile';
   static const CHAT = '/chat';
+  static const HOME_ADMIN = '/home-admin';
+  static const ADMIN_CHAT = '/admin-chat';
 }

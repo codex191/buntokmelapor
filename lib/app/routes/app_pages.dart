@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/admin_chat/bindings/admin_chat_binding.dart';
+import '../modules/admin_chat/views/admin_chat_view.dart';
 import '../modules/aduan_page/bindings/aduan_page_binding.dart';
 import '../modules/aduan_page/views/aduan_page_view.dart';
 import '../modules/change_profile/bindings/change_profile_binding.dart';
@@ -8,6 +10,8 @@ import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/home_admin/bindings/home_admin_binding.dart';
+import '../modules/home_admin/views/home_admin_view.dart';
 import '../modules/introduction/bindings/introduction_binding.dart';
 import '../modules/introduction/views/introduction_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -62,6 +66,16 @@ class AppPages {
       name: _Paths.CHAT,
       page: () => const ChatView(),
       binding: ChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME_ADMIN,
+      page: () => const HomeAdminView(),
+      binding: HomeAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_CHAT,
+      page: () => const AdminChatView(),
+      binding: AdminChatBinding(),
     ),
   ];
 }
