@@ -55,6 +55,12 @@ class HomeView extends GetView<HomeController> {
               title: const Text('Profil Anda'),
               onTap: () => Get.toNamed(Routes.PROFILE),
             ),
+            //UNTUK TEST SAJA
+            ListTile(
+              leading: const Icon(Icons.face),
+              title: const Text('Cari'),
+              onTap: () => Get.toNamed(Routes.SEARCH_CHAT),
+            ),
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Log Out'),

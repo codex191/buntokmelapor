@@ -20,6 +20,8 @@ import '../modules/pertanyaan/bindings/pertanyaan_binding.dart';
 import '../modules/pertanyaan/views/pertanyaan_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/search_chat/bindings/search_chat_binding.dart';
+import '../modules/search_chat/views/search_chat_view.dart';
 
 part 'app_routes.dart';
 
@@ -76,6 +78,11 @@ class AppPages {
       name: _Paths.ADMIN_CHAT,
       page: () => AdminChatView(),
       binding: AdminChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEARCH_CHAT,
+      page: () => SearchChatView(),
+      binding: SearchChatBinding(),
     ),
   ];
 }

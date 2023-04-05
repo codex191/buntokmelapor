@@ -2,6 +2,7 @@ class UsersModel {
   String? uid;
   String? email;
   String? name;
+  String? keyName;
   String? photoUrl;
   String? creationTime;
   String? lastSignIn;
@@ -12,6 +13,7 @@ class UsersModel {
       {this.uid,
       this.email,
       this.name,
+      this.keyName,
       this.photoUrl,
       this.creationTime,
       this.lastSignIn,
@@ -22,6 +24,7 @@ class UsersModel {
     uid = json['uid'];
     email = json['email'];
     name = json['name'];
+    keyName = json['keyName'];
     photoUrl = json['photoUrl'];
     creationTime = json['creationTime'];
     lastSignIn = json['lastSignIn'];
@@ -39,6 +42,7 @@ class UsersModel {
     data['uid'] = uid;
     data['email'] = email;
     data['name'] = name;
+    data['keyName'] = keyName;
     data['photoUrl'] = photoUrl;
     data['creationTime'] = creationTime;
     data['lastSignIn'] = lastSignIn;

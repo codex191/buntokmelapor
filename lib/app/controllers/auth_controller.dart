@@ -128,6 +128,7 @@ class AuthController extends GetxController {
           await users.doc(_currentUser!.email).set({
             "uid": userCredential!.user!.uid,
             "name": _currentUser!.displayName,
+            "keyName": _currentUser!.displayName?.substring(0, 1).toUpperCase(),
             "email": _currentUser!.email,
             "photoUrl": _currentUser!.photoUrl ?? "noimage",
             "creationTime":
@@ -174,6 +175,7 @@ class AuthController extends GetxController {
 
     users.doc(_currentUser!.email).update({
       "name": name,
+      "keyName": name.substring(0, 1).toUpperCase(),
       "lasSignIn":
           userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
       "updateTime": date,
@@ -182,6 +184,7 @@ class AuthController extends GetxController {
     // update Model
     user.update((user) {
       user!.name = name;
+      user.keyName = name.substring(0, 1).toUpperCase();
       user.lastSignIn =
           userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
       user.updatedTime = date;

@@ -13,6 +13,7 @@ abstract class Routes {
   static const CHAT = _Paths.CHAT;
   static const HOME_ADMIN = _Paths.HOME_ADMIN;
   static const ADMIN_CHAT = _Paths.ADMIN_CHAT;
+  static const SEARCH_CHAT = _Paths.SEARCH_CHAT;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const CHAT = '/chat';
   static const HOME_ADMIN = '/home-admin';
   static const ADMIN_CHAT = '/admin-chat';
+  static const SEARCH_CHAT = '/search-chat';
 }
