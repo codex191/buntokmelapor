@@ -37,11 +37,11 @@ class HomeView extends GetView<HomeController> {
                   child: authC.user.value.photoUrl! == "noimage"
                       ? Image.asset(
                           "assets/logo/LogoKominfoTanpaTeks.png",
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         )
                       : Image.network(
                           authC.user.value.photoUrl!,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                           height: 250,
                           width: 250,
                         ),

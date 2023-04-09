@@ -178,7 +178,7 @@ class AuthController extends GetxController {
       "keyName": name.substring(0, 1).toUpperCase(),
       "lasSignIn":
           userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
-      "updateTime": date,
+      "updatedTime": date,
     });
 
     // update Model

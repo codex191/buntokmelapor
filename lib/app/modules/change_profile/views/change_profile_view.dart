@@ -18,7 +18,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
             onPressed: () => Get.back(),
             icon: Icon(Icons.arrow_back),
           ),
-          backgroundColor: Colors.red[800],
+          backgroundColor: Colors.blueAccent[800],
           title: const Text('Change Profile'),
           centerTitle: true,
           actions: [
@@ -37,7 +37,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
           child: ListView(
             children: [
               AvatarGlow(
-                endRadius: 25,
+                endRadius: 75,
                 glowColor: Colors.black,
                 duration: Duration(seconds: 2),
                 child: Container(
@@ -49,13 +49,11 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
                         child: authC.user.value.photoUrl! == "noimage"
                             ? Image.asset(
                                 "assets/logo/LogoKominfoTanpaTeks.png",
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                               )
                             : Image.network(
                                 authC.user.value.photoUrl!,
-                                fit: BoxFit.fill,
-                                height: 250,
-                                width: 250,
+                                fit: BoxFit.cover,
                               ),
                       )),
                 ),
@@ -144,7 +142,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red[900],
+                    primary: Colors.blueAccent[900],
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
                     ),
