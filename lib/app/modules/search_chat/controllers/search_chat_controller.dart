@@ -11,7 +11,7 @@ class SearchChatController extends GetxController {
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  void searchUser(String data) async {
+  void searchUser(String data, String email) async {
     print("Search : $data");
 
     if (data.length == 0) {
@@ -26,6 +26,7 @@ class SearchChatController extends GetxController {
         CollectionReference users = await firestore.collection("users");
         final keyNameResult = await users
             .where("keyName", isEqualTo: data.substring(0, 1).toUpperCase())
+            .where("email", isNotEqualTo: email)
             .get();
 
         print("Total Data : ${keyNameResult.docs.length}");

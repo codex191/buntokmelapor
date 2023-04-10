@@ -1,3 +1,4 @@
+import 'package:buntokmelapor/app/controllers/auth_controller.dart';
 import 'package:buntokmelapor/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -8,6 +9,7 @@ import 'package:lottie/lottie.dart';
 import '../controllers/search_chat_controller.dart';
 
 class SearchChatView extends GetView<SearchChatController> {
+  final authC = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +27,8 @@ class SearchChatView extends GetView<SearchChatController> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: TextField(
-                  onChanged: (value) => controller.searchUser(value),
+                  onChanged: (value) =>
+                      controller.searchUser(value, authC.user.value.email!),
                   cursorColor: Colors.blueAccent,
                   decoration: InputDecoration(
                       fillColor: Colors.white,
