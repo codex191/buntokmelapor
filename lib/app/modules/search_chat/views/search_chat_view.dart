@@ -71,7 +71,7 @@ class SearchChatView extends GetView<SearchChatController> {
                   child: Container(
                     width: Get.width * 0.7,
                     height: Get.width * 0.7,
-                    child: Lottie.asset("assets/lottie/welcome.json"),
+                    child: Lottie.asset("assets/lottie/search-users.json"),
                   ),
                 )
               : ListView.builder(

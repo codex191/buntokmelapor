@@ -15,137 +15,149 @@ class HomeView extends GetView<HomeController> {
     Size screenSize = MediaQuery.of(context).size;
     Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.blueAccent,
-        elevation: 4,
-        leading: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Image.asset('assets/logo/LogoKominfoTanpaTeks.png'),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.blueAccent,
+          elevation: 4,
+          leading: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Image.asset('assets/logo/LogoKominfoTanpaTeks.png'),
+          ),
         ),
-      ),
-      endDrawer: Drawer(
-        child: Column(
-          children: [
-            UserAccountsDrawerHeader(
-              currentAccountPicture: Container(
-                margin: EdgeInsets.all(15),
-                width: 250,
-                height: 175,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(200),
-                  child: authC.user.value.photoUrl! == "noimage"
-                      ? Image.asset(
-                          "assets/logo/LogoKominfoTanpaTeks.png",
-                          fit: BoxFit.cover,
-                        )
-                      : Image.network(
-                          authC.user.value.photoUrl!,
-                          fit: BoxFit.cover,
-                          height: 250,
-                          width: 250,
-                        ),
+        endDrawer: Drawer(
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                currentAccountPicture: Container(
+                  margin: EdgeInsets.all(15),
+                  width: 250,
+                  height: 175,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(200),
+                    child: authC.user.value.photoUrl! == "noimage"
+                        ? Image.asset(
+                            "assets/logo/LogoKominfoTanpaTeks.png",
+                            fit: BoxFit.cover,
+                          )
+                        : Image.network(
+                            authC.user.value.photoUrl!,
+                            fit: BoxFit.cover,
+                            height: 250,
+                            width: 250,
+                          ),
+                  ),
                 ),
+                accountName: Obx(() => Text("${authC.user.value.name}")),
+                accountEmail: Obx(() => Text("${authC.user.value.email}")),
               ),
-              accountName: Obx(() => Text("${authC.user.value.name}")),
-              accountEmail: Obx(() => Text("${authC.user.value.email}")),
-            ),
-            ListTile(
-              leading: const Icon(Icons.face),
-              title: const Text('Profil Anda'),
-              onTap: () => Get.toNamed(Routes.PROFILE),
-            ),
-            //UNTUK TEST SAJA
-            ListTile(
-              leading: const Icon(Icons.face),
-              title: const Text('Cari'),
-              onTap: () => Get.toNamed(Routes.SEARCH_CHAT),
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Log Out'),
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text('Apakah Anda yakin untuk keluar?'),
-                        content: const Text('Tekan Ya jika ingin logout'),
-                        actions: <Widget>[
-                          TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: Text('TIDAK')),
-                          TextButton(
-                              onPressed: () => authC.logout(),
-                              child: Text('YA')),
-                        ],
-                      );
-                    });
-              },
-            ),
-            Expanded(child: Text("")),
-            Container(
-              child: Column(
+              ListTile(
+                leading: const Icon(Icons.face),
+                title: const Text('Profil Anda'),
+                onTap: () => Get.toNamed(Routes.PROFILE),
+              ),
+              //UNTUK TEST SAJA
+              ListTile(
+                leading: const Icon(Icons.face),
+                title: const Text('Cari'),
+                onTap: () => Get.toNamed(Routes.SEARCH_CHAT),
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Log Out'),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Apakah Anda yakin untuk keluar?'),
+                          content: const Text('Tekan Ya jika ingin logout'),
+                          actions: <Widget>[
+                            TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text('TIDAK')),
+                            TextButton(
+                                onPressed: () => authC.logout(),
+                                child: Text('YA')),
+                          ],
+                        );
+                      });
+                },
+              ),
+              Expanded(child: Text("")),
+              Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Buntok Melapor"),
+                      Text("v.0.0.1"),
+                    ]),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+            ],
+          ),
+        ),
+        body: Center(
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () {}, child: const Text('Masukan Laporan Anda')),
+              Expanded(
+                child: Text(""),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Buntok Melapor"),
-                    Text("v.0.0.1"),
-                  ]),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-          ],
+                    Image.asset(
+                      'assets/logo/LogoUPR.png',
+                      width: 75,
+                      height: 75,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Image.asset(
+                      'assets/logo/LogoPemko.png',
+                      width: 75,
+                      height: 75,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Image.asset(
+                      'assets/logo/LogoKominfo.png',
+                      width: 75,
+                      height: 75,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-      body: Center(
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            ElevatedButton(
-                onPressed: () {}, child: const Text('Masukan Laporan Anda')),
-            Expanded(
-              child: Text(""),
+            FloatingActionButton(
+              onPressed: () {
+                authC.addNewConnection(friendEmail);
+              },
+              backgroundColor: Colors.blue,
+              child: const Icon(Icons.help_rounded),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/logo/LogoUPR.png',
-                    width: 75,
-                    height: 75,
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Image.asset(
-                    'assets/logo/LogoPemko.png',
-                    width: 75,
-                    height: 75,
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Image.asset(
-                    'assets/logo/LogoKominfo.png',
-                    width: 75,
-                    height: 75,
-                  ),
-                ],
-              ),
-            )
+            SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              onPressed: () => Get.toNamed(Routes.FEEDBACK_PAGE),
+              backgroundColor: Colors.blue,
+              child: const Icon(Icons.feedback_rounded),
+            ),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          authC.addNewConnection(friendEmail);
-        },
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.help_rounded),
-      ),
-    );
+        ));
   }
 }

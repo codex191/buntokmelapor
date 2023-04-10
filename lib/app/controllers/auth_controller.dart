@@ -168,6 +168,33 @@ class AuthController extends GetxController {
     Get.offAllNamed(Routes.LOGIN);
   }
 
+  void addFeedback(String kritik, String saran) async {
+    CollectionReference feedback = firestore.collection("feedback");
+
+    try {
+      await feedback.add({
+        "pengirim": _currentUser!.email,
+        "kritik": kritik,
+        "saran": saran,
+      });
+
+      Get.defaultDialog(
+          title: "Berhasil",
+          middleText: "Berhasil menambahkan kritik dan saran",
+          onConfirm: () {
+            Get.back();
+            Get.back();
+          });
+    } catch (e) {
+      Get.defaultDialog(
+          title: "Gagal",
+          middleText: "Gagal menambahkan kritik dan saran",
+          onConfirm: () {
+            Get.back();
+          });
+    }
+  }
+
   // UNTUK PROFILE
   void changeProfile(String name) {
     final date = DateTime.now().toIso8601String();

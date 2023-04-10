@@ -8,6 +8,8 @@ import '../modules/change_profile/bindings/change_profile_binding.dart';
 import '../modules/change_profile/views/change_profile_view.dart';
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
+import '../modules/feedback_page/bindings/feedback_page_binding.dart';
+import '../modules/feedback_page/views/feedback_page_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home_admin/bindings/home_admin_binding.dart';
@@ -83,6 +85,11 @@ class AppPages {
       name: _Paths.SEARCH_CHAT,
       page: () => SearchChatView(),
       binding: SearchChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.FEEDBACK_PAGE,
+      page: () => FeedbackPageView(),
+      binding: FeedbackPageBinding(),
     ),
   ];
 }
