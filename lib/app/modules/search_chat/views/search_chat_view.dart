@@ -92,7 +92,7 @@ class SearchChatView extends GetView<SearchChatController> {
                     subtitle: Text(
                       "${controller.tempSearch[index]["email"]}",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

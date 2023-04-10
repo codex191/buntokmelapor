@@ -1,6 +1,7 @@
 class UsersModel {
   String? uid;
   String? email;
+  String? role;
   String? name;
   String? keyName;
   String? photoUrl;
@@ -12,6 +13,7 @@ class UsersModel {
   UsersModel(
       {this.uid,
       this.email,
+      this.role,
       this.name,
       this.keyName,
       this.photoUrl,
@@ -23,6 +25,7 @@ class UsersModel {
   UsersModel.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
     email = json['email'];
+    role = json['role'];
     name = json['name'];
     keyName = json['keyName'];
     photoUrl = json['photoUrl'];
@@ -41,6 +44,7 @@ class UsersModel {
     final data = <String, dynamic>{};
     data['uid'] = uid;
     data['email'] = email;
+    data['role'] = role;
     data['name'] = name;
     data['keyName'] = keyName;
     data['photoUrl'] = photoUrl;

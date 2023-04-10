@@ -73,6 +73,15 @@ class AuthController extends GetxController {
         final currUserData = currUser.data() as Map<String, dynamic>;
 
         user(UsersModel.fromJson(currUserData));
+        if (currUser.exists) {
+          final role = currUser.get('role');
+
+          if (role == "user") {
+            Get.offAllNamed(Routes.HOME);
+          } else {
+            Get.offAllNamed(Routes.HOME_ADMIN);
+          }
+        }
 
         return true;
       }
@@ -128,6 +137,7 @@ class AuthController extends GetxController {
           await users.doc(_currentUser!.email).set({
             "uid": userCredential!.user!.uid,
             "name": _currentUser!.displayName,
+            "role": "user",
             "keyName": _currentUser!.displayName?.substring(0, 1).toUpperCase(),
             "email": _currentUser!.email,
             "photoUrl": _currentUser!.photoUrl ?? "noimage",
@@ -151,7 +161,16 @@ class AuthController extends GetxController {
         user(UsersModel.fromJson(currUserData));
 
         isAuth.value = true;
-        Get.offAllNamed(Routes.HOME);
+
+        if (currUser.exists) {
+          final role = currUser.get('role');
+
+          if (role == "user") {
+            Get.offAllNamed(Routes.HOME);
+          } else {
+            Get.offAllNamed(Routes.HOME_ADMIN);
+          }
+        }
       } else {
         //kondisi tidak login
         print("Tidak berhasil Login");
