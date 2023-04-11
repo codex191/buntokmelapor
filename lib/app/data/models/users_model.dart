@@ -62,13 +62,15 @@ class ChatUser {
   String? connection;
   String? chatId;
   String? lastTime;
+  int? total_unread;
 
-  ChatUser({this.connection, this.chatId, this.lastTime});
+  ChatUser({this.connection, this.chatId, this.lastTime, this.total_unread});
 
   ChatUser.fromJson(Map<String, dynamic> json) {
     connection = json['connection'];
     chatId = json['chat_id'];
     lastTime = json['lastTime'];
+    total_unread = json['total_unread'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +78,7 @@ class ChatUser {
     data['connection'] = connection;
     data['chat_id'] = chatId;
     data['lastTime'] = lastTime;
+    data['total_unread'] = total_unread;
     return data;
   }
 }

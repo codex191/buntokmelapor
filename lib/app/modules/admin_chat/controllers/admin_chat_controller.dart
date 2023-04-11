@@ -1,23 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 class AdminChatController extends GetxController {
   //TODO: Implement AdminChatController
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> chatsStream(String email) {
+    return firestore.collection('users').doc(email).snapshots();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Stream<DocumentSnapshot<Map<String, dynamic>>> friendStream(String email) {
+    return firestore.collection('users').doc(email).snapshots();
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

@@ -3,9 +3,6 @@
         "agustianbrian25@gmail.com",
         "admin.buntokmelapor@gmail.com"
     ],
-    "total_chats": 10,
-    "total_read": 8,
-    "total_unread": 2,
     "chat": [
         {
             "pengirim": "agustianbrian25@gmail.com",
@@ -21,6 +18,5 @@
             "time": "2023-03-21T21:36:20.797176",
             "isRead": false
         }
-    ],
-    "lastTime": "2023-03-21T21:36:20.797176"
+    ]
 }

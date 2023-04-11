@@ -61,6 +61,11 @@ class HomeAdminView extends GetView<HomeAdminController> {
                 onTap: () => Get.toNamed(Routes.SEARCH_CHAT),
               ),
               ListTile(
+                leading: const Icon(Icons.chat),
+                title: const Text('Kontak Masuk'),
+                onTap: () => Get.toNamed(Routes.ADMIN_CHAT),
+              ),
+              ListTile(
                 leading: const Icon(Icons.logout),
                 title: const Text('Log Out'),
                 onTap: () {
