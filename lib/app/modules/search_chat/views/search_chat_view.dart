@@ -97,7 +97,8 @@ class SearchChatView extends GetView<SearchChatController> {
                       ),
                     ),
                     trailing: GestureDetector(
-                      onTap: () => Get.toNamed(Routes.CHAT),
+                      onTap: () => authC.addNewConnection(
+                          controller.tempSearch[index]["email"]),
                       child: Chip(
                         label: Text("Pesan"),
                       ),

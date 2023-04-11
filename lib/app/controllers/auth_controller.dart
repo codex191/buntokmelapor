@@ -2,6 +2,7 @@ import 'package:buntokmelapor/app/data/models/users_model.dart';
 import 'package:buntokmelapor/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -245,17 +246,18 @@ class AuthController extends GetxController {
 
   // Untuk Chat
   void addNewConnection(String friendEmail) async {
-    var chat_id;
     bool flagNewConnection = false;
-    CollectionReference chats = firestore.collection('chats');
+    var chat_id;
     String date = DateTime.now().toIso8601String();
-    CollectionReference users = firestore.collection('users');
+    CollectionReference chats = firestore.collection("chats");
+    CollectionReference users = firestore.collection("users");
 
     final docUser = await users.doc(_currentUser!.email).get();
     final docChats = (docUser.data() as Map<String, dynamic>)["chats"] as List;
 
     if (docChats.length != 0) {
-      // user pernah chat dengan siapapun
+      // user sudah pernah chat dengan siapapun
+
       docChats.forEach((singleChat) {
         if (singleChat["connection"] == friendEmail) {
           chat_id = singleChat["chat_id"];
@@ -263,95 +265,86 @@ class AuthController extends GetxController {
       });
 
       if (chat_id != null) {
-        // sudah pernah buat oneksi dengan friendlist
+        // sudah pernah buat koneksi dengan => friendEmail
         flagNewConnection = false;
       } else {
-        //belum pernah buat koneksi
+        // blm pernah buat koneksi dengan => friendEmail
+        // buat koneksi ....
         flagNewConnection = true;
       }
     } else {
-      // user belum pernah chat dengan siapapun
+      // blm pernah chat dengan siapapun
+      // buat koneksi ....
       flagNewConnection = true;
     }
 
     if (flagNewConnection) {
-      //Mengecek chats collections
-      final chatsDocs = await chats.where("connecions", whereIn: [
-        [
-          _currentUser!.email,
-          friendEmail,
-        ],
-        [
-          friendEmail,
-          _currentUser!.email,
-        ],
-      ]).get();
-
-      if (chatsDocs.docs.length != 0) {
-        // sudah ada koneksi
-        final chatDataId = chatsDocs.docs[0].id;
-        final chatsData = chatsDocs.docs[0].data() as Map<String, dynamic>;
-
-        await users.doc(_currentUser!.email).update({
-          "chats": [
-            {
-              "connection": friendEmail,
-              "chat_id": chatDataId,
-              "lasttime": chatsData["lastTime"],
-            }
-          ]
-        });
-
-        user.update((user) {
-          user!.chats = [
-            ChatUser(
-              chatId: chatDataId,
-              connection: friendEmail,
-              lastTime: chatsData["lastTime"],
-            )
-          ];
-        });
-
-        chat_id = chatDataId;
-        user.refresh();
-      } else {
-        // buat baru apabila user dan admin belum memiliki koneksi
-        final newChatDoc = await chats.add({
-          "connection": [
+      // cek dari chats collection => connections => mereka berdua...
+      final chatsDocs = await chats.where(
+        "connections",
+        whereIn: [
+          [
             _currentUser!.email,
             friendEmail,
           ],
-          "total_chats": 0,
-          "total_read": 0,
+          [
+            friendEmail,
+            _currentUser!.email,
+          ],
+        ],
+      ).get();
+
+      if (chatsDocs.docs.length != 0) {
+        // terdapat data chats (sudah ada koneksi antara mereka berdua)
+        final chatDataId = chatsDocs.docs[0].id;
+        final chatsData = chatsDocs.docs[0].data() as Map<String, dynamic>;
+
+        docChats.add({
+          "connection": friendEmail,
+          "chat_id": chatDataId,
+          "lastTime": chatsData["lastTime"],
           "total_unread": 0,
-          "chat": [],
-          "lastTime": date,
         });
 
-        await users.doc(_currentUser!.email).update({
-          "chats": [
-            {
-              "connection": friendEmail,
-              "chat_id": newChatDoc.id,
-              "lasttime": date,
-            }
-          ]
-        });
+        await users.doc(_currentUser!.email).update({"chats": docChats});
 
         user.update((user) {
-          user!.chats = [
-            ChatUser(
-              chatId: newChatDoc.id,
-              connection: friendEmail,
-              lastTime: date,
-            )
-          ];
+          user!.chats = docChats as List<ChatUser>;
+        });
+
+        chat_id = chatDataId;
+
+        user.refresh();
+      } else {
+        // buat baru , mereka berdua benar2 belum ada koneksi
+        final newChatDoc = await chats.add({
+          "connections": [
+            _currentUser!.email,
+            friendEmail,
+          ],
+          "chat": [],
+        });
+
+        docChats.add({
+          "connection": friendEmail,
+          "chat_id": newChatDoc.id,
+          "lastTime": date,
+          "total_unread": 0,
+        });
+
+        await users.doc(_currentUser!.email).update({"chats": docChats});
+
+        user.update((user) {
+          user!.chats = docChats as List<ChatUser>;
         });
 
         chat_id = newChatDoc.id;
+
         user.refresh();
       }
     }
+
+    print(chat_id);
 
     Get.toNamed(Routes.CHAT, arguments: chat_id);
   }
