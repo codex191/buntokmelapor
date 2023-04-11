@@ -80,6 +80,19 @@ class SearchChatView extends GetView<SearchChatController> {
                   itemBuilder: (context, index) => ListTile(
                     onTap: () {},
                     leading: CircleAvatar(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: controller.tempSearch[index]["photoUrl"] ==
+                                "noimage"
+                            ? Image.network(
+                                "assets/logo/LogoKominfoTanpaTeks.png",
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                controller.tempSearch[index]["photoUrl"],
+                                fit: BoxFit.cover,
+                              ),
+                      ),
                       radius: 30,
                     ),
                     title: Text(
