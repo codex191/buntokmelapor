@@ -9,6 +9,37 @@ import '../controllers/admin_chat_controller.dart';
 
 class AdminChatView extends GetView<AdminChatController> {
   final authC = Get.find<AuthController>();
+  List dataTemp = List.generate(
+      10,
+      (i) => ListTile(
+            onTap: () {},
+            leading: CircleAvatar(
+              radius: 30,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.asset(
+                    "assets/logo/LogoKominfoTanpaTeks.png",
+                    fit: BoxFit.cover,
+                  )),
+            ),
+            title: Text(
+              "Orang ke-${i + 1}",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Text(
+              "Orang ke-${i + 1}",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            trailing: Chip(
+              label: Text("3"),
+            ),
+          ));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,78 +91,78 @@ class AdminChatView extends GetView<AdminChatController> {
       ),
       body: Column(
         children: [
-          Expanded(
-            child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: controller.chatsStream(authC.user.value.email!),
-              builder: (context, snapshot1) {
-                print(snapshot1.data);
-                if (snapshot1.connectionState == ConnectionState.active) {
-                  var allChats = (snapshot1.data!.data()
-                      as Map<String, dynamic>)["chats"] as List;
-                  return ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemCount: allChats.length,
-                      itemBuilder: (context, index) {
-                        return StreamBuilder<
-                                DocumentSnapshot<Map<String, dynamic>>>(
-                            stream: controller
-                                .friendStream(allChats[index]["connection"]),
-                            builder: ((context, snapshot2) {
-                              if (snapshot2.connectionState ==
-                                  ConnectionState.active) {
-                                var data = snapshot2.data!.data();
-                                return ListTile(
-                                  onTap: () {},
-                                  leading: CircleAvatar(
-                                      radius: 30,
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          child: data!["photoUrl"] == "noimage"
-                                              ? Image.asset(
-                                                  "assets/logo/LogoKominfoTanpaTeks.png",
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : Image.network(
-                                                  "${data["photoUrl"]}"))),
-                                  title: Text(
-                                    "${data["name"]}",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    "${data["email"]}",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  trailing: allChats[index]["total_unread"] == 0
-                                      ? SizedBox()
-                                      : Chip(
-                                          label: Text(
-                                              "${allChats[index]["total_unread"]}"),
-                                        ),
-                                );
-                              }
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }));
-                      });
-                }
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ),
-            // child: ListView.builder(
-            //     padding: EdgeInsets.zero,
-            //     itemCount: myChat.length,
-            //     itemBuilder: (context, index) => myChat[index]),
-          ),
+          // Expanded(
+          //   child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          //     stream: controller.chatsStream(authC.user.value.email!),
+          //     builder: (context, snapshot1) {
+          //       print(snapshot1.data);
+          //       if (snapshot1.connectionState == ConnectionState.active) {
+          //         var allChats = (snapshot1.data!.data()
+          //             as Map<String, dynamic>)["chats"] as List;
+          //         return ListView.builder(
+          //             padding: EdgeInsets.zero,
+          //             itemCount: allChats.length,
+          //             itemBuilder: (context, index) {
+          //               return StreamBuilder<
+          //                       DocumentSnapshot<Map<String, dynamic>>>(
+          //                   stream: controller
+          //                       .friendStream(allChats[index]["connection"]),
+          //                   builder: ((context, snapshot2) {
+          //                     if (snapshot2.connectionState ==
+          //                         ConnectionState.active) {
+          //                       var data = snapshot2.data!.data();
+          //                       return ListTile(
+          //                         onTap: () {},
+          //                         leading: CircleAvatar(
+          //                             radius: 30,
+          //                             child: ClipRRect(
+          //                                 borderRadius:
+          //                                     BorderRadius.circular(100),
+          //                                 child: data!["photoUrl"] == "noimage"
+          //                                     ? Image.asset(
+          //                                         "assets/logo/LogoKominfoTanpaTeks.png",
+          //                                         fit: BoxFit.cover,
+          //                                       )
+          //                                     : Image.network(
+          //                                         "${data["photoUrl"]}"))),
+          //                         title: Text(
+          //                           "${data["name"]}",
+          //                           style: TextStyle(
+          //                             fontSize: 18,
+          //                             fontWeight: FontWeight.w600,
+          //                           ),
+          //                         ),
+          //                         subtitle: Text(
+          //                           "${data["email"]}",
+          //                           style: TextStyle(
+          //                             fontSize: 14,
+          //                             fontWeight: FontWeight.w600,
+          //                           ),
+          //                         ),
+          //                         trailing: allChats[index]["total_unread"] == 0
+          //                             ? SizedBox()
+          //                             : Chip(
+          //                                 label: Text(
+          //                                     "${allChats[index]["total_unread"]}"),
+          //                               ),
+          //                       );
+          //                     }
+          //                     return Center(
+          //                       child: CircularProgressIndicator(),
+          //                     );
+          //                   }));
+          //             });
+          //       }
+          //       return Center(
+          //         child: CircularProgressIndicator(),
+          //       );
+          //     },
+          //   ),
+          //   // child: ListView.builder(
+          //   //     padding: EdgeInsets.zero,
+          //   //     itemCount: myChat.length,
+          //   //     itemBuilder: (context, index) => myChat[index]),
+          // ),
         ],
       ),
     );
