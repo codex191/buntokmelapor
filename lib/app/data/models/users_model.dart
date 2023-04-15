@@ -32,12 +32,6 @@ class UsersModel {
     creationTime = json['creationTime'];
     lastSignIn = json['lastSignIn'];
     updatedTime = json['updatedTime'];
-    if (json['chats'] != null) {
-      chats = <ChatUser>[];
-      json['chats'].forEach((v) {
-        chats?.add(ChatUser.fromJson(v));
-      });
-    }
   }
 
   Map<String, dynamic> toJson() {
@@ -51,9 +45,6 @@ class UsersModel {
     data['creationTime'] = creationTime;
     data['lastSignIn'] = lastSignIn;
     data['updatedTime'] = updatedTime;
-    if (chats != null) {
-      data['chats'] = chats?.map((v) => v.toJson()).toList();
-    }
     return data;
   }
 }

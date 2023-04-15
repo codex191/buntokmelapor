@@ -9,37 +9,6 @@ import '../controllers/admin_chat_controller.dart';
 
 class AdminChatView extends GetView<AdminChatController> {
   final authC = Get.find<AuthController>();
-  List dataTemp = List.generate(
-      10,
-      (i) => ListTile(
-            onTap: () {},
-            leading: CircleAvatar(
-              radius: 30,
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.asset(
-                    "assets/logo/LogoKominfoTanpaTeks.png",
-                    fit: BoxFit.cover,
-                  )),
-            ),
-            title: Text(
-              "Orang ke-${i + 1}",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            subtitle: Text(
-              "Orang ke-${i + 1}",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            trailing: Chip(
-              label: Text("3"),
-            ),
-          ));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,6 +60,82 @@ class AdminChatView extends GetView<AdminChatController> {
       ),
       body: Column(
         children: [
+          Expanded(
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              builder: (context, snapshot1) {
+                if (snapshot1.connectionState == ConnectionState.active) {
+                  var listDocsChats = snapshot1.data!.docs;
+                  return ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: listDocsChats.length,
+                      itemBuilder: (context, index) {
+                        return StreamBuilder<
+                            DocumentSnapshot<Map<String, dynamic>>>(
+                          stream: controller
+                              .friendStream(listDocsChats[index]["connection"]),
+                          builder: (context, snapshot2) {
+                            if (snapshot2.connectionState ==
+                                ConnectionState.active) {
+                              var data = snapshot2.data!.data();
+                              return ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 5,
+                                ),
+                                onTap: () {},
+                                leading: CircleAvatar(
+                                    radius: 30,
+                                    child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: data!["photoUrl"] == "noimage"
+                                            ? Image.asset(
+                                                "assets/logo/LogoKominfoTanpaTeks.png",
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                "${data["photoUrl"]}"))),
+                                title: Text(
+                                  "${data["name"]}",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  "${data["email"]}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                trailing:
+                                    listDocsChats[index]["total_unread"] == 0
+                                        ? SizedBox()
+                                        : Chip(
+                                            backgroundColor: Colors.blueAccent,
+                                            label: Text(
+                                              "${listDocsChats[index]["total_unread"]}",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                              );
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        );
+                      });
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+          ),
           // Expanded(
           //   child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           //     stream: controller.chatsStream(authC.user.value.email!),
