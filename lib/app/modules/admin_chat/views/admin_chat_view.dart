@@ -62,73 +62,82 @@ class AdminChatView extends GetView<AdminChatController> {
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: controller.chatsStream(authC.user.value.email!),
               builder: (context, snapshot1) {
                 if (snapshot1.connectionState == ConnectionState.active) {
                   var listDocsChats = snapshot1.data!.docs;
                   return ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemCount: listDocsChats.length,
-                      itemBuilder: (context, index) {
-                        return StreamBuilder<
-                            DocumentSnapshot<Map<String, dynamic>>>(
-                          stream: controller
-                              .friendStream(listDocsChats[index]["connection"]),
-                          builder: (context, snapshot2) {
-                            if (snapshot2.connectionState ==
-                                ConnectionState.active) {
-                              var data = snapshot2.data!.data();
-                              return ListTile(
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 5,
+                    padding: EdgeInsets.zero,
+                    itemCount: listDocsChats.length,
+                    itemBuilder: (context, index) {
+                      return StreamBuilder<
+                          DocumentSnapshot<Map<String, dynamic>>>(
+                        stream: controller
+                            .friendStream(listDocsChats[index]["connection"]),
+                        builder: (context, snapshot2) {
+                          if (snapshot2.connectionState ==
+                              ConnectionState.active) {
+                            var data = snapshot2.data!.data();
+                            return ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 5,
+                              ),
+                              onTap: () => Get.toNamed(
+                                Routes.CHAT,
+                                arguments: {
+                                  "chat_id": "${listDocsChats[index].id}",
+                                  "friendEmail": listDocsChats[index]
+                                      ["connection"],
+                                },
+                              ),
+                              leading: CircleAvatar(
+                                radius: 30,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: data!["photoUrl"] == "noimage"
+                                      ? Image.asset(
+                                          "assets/logo/LogoKominfoTanpaTeks.png",
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.network("${data["photoUrl"]}"),
                                 ),
-                                onTap: () {},
-                                leading: CircleAvatar(
-                                    radius: 30,
-                                    child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        child: data!["photoUrl"] == "noimage"
-                                            ? Image.asset(
-                                                "assets/logo/LogoKominfoTanpaTeks.png",
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Image.network(
-                                                "${data["photoUrl"]}"))),
-                                title: Text(
-                                  "${data["name"]}",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              ),
+                              title: Text(
+                                "${data["name"]}",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                subtitle: Text(
-                                  "${data["email"]}",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              ),
+                              subtitle: Text(
+                                "${data["email"]}",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                trailing:
-                                    listDocsChats[index]["total_unread"] == 0
-                                        ? SizedBox()
-                                        : Chip(
-                                            backgroundColor: Colors.blueAccent,
-                                            label: Text(
-                                              "${listDocsChats[index]["total_unread"]}",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
+                              ),
+                              trailing:
+                                  listDocsChats[index]["total_unread"] == 0
+                                      ? SizedBox()
+                                      : Chip(
+                                          backgroundColor: Colors.blueAccent,
+                                          label: Text(
+                                            "${listDocsChats[index]["total_unread"]}",
+                                            style: TextStyle(
+                                              color: Colors.white,
                                             ),
                                           ),
-                              );
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(),
+                                        ),
                             );
-                          },
-                        );
-                      });
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      );
+                    },
+                  );
                 }
                 return Center(
                   child: CircularProgressIndicator(),
@@ -136,78 +145,6 @@ class AdminChatView extends GetView<AdminChatController> {
               },
             ),
           ),
-          // Expanded(
-          //   child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          //     stream: controller.chatsStream(authC.user.value.email!),
-          //     builder: (context, snapshot1) {
-          //       print(snapshot1.data);
-          //       if (snapshot1.connectionState == ConnectionState.active) {
-          //         var allChats = (snapshot1.data!.data()
-          //             as Map<String, dynamic>)["chats"] as List;
-          //         return ListView.builder(
-          //             padding: EdgeInsets.zero,
-          //             itemCount: allChats.length,
-          //             itemBuilder: (context, index) {
-          //               return StreamBuilder<
-          //                       DocumentSnapshot<Map<String, dynamic>>>(
-          //                   stream: controller
-          //                       .friendStream(allChats[index]["connection"]),
-          //                   builder: ((context, snapshot2) {
-          //                     if (snapshot2.connectionState ==
-          //                         ConnectionState.active) {
-          //                       var data = snapshot2.data!.data();
-          //                       return ListTile(
-          //                         onTap: () {},
-          //                         leading: CircleAvatar(
-          //                             radius: 30,
-          //                             child: ClipRRect(
-          //                                 borderRadius:
-          //                                     BorderRadius.circular(100),
-          //                                 child: data!["photoUrl"] == "noimage"
-          //                                     ? Image.asset(
-          //                                         "assets/logo/LogoKominfoTanpaTeks.png",
-          //                                         fit: BoxFit.cover,
-          //                                       )
-          //                                     : Image.network(
-          //                                         "${data["photoUrl"]}"))),
-          //                         title: Text(
-          //                           "${data["name"]}",
-          //                           style: TextStyle(
-          //                             fontSize: 18,
-          //                             fontWeight: FontWeight.w600,
-          //                           ),
-          //                         ),
-          //                         subtitle: Text(
-          //                           "${data["email"]}",
-          //                           style: TextStyle(
-          //                             fontSize: 14,
-          //                             fontWeight: FontWeight.w600,
-          //                           ),
-          //                         ),
-          //                         trailing: allChats[index]["total_unread"] == 0
-          //                             ? SizedBox()
-          //                             : Chip(
-          //                                 label: Text(
-          //                                     "${allChats[index]["total_unread"]}"),
-          //                               ),
-          //                       );
-          //                     }
-          //                     return Center(
-          //                       child: CircularProgressIndicator(),
-          //                     );
-          //                   }));
-          //             });
-          //       }
-          //       return Center(
-          //         child: CircularProgressIndicator(),
-          //       );
-          //     },
-          //   ),
-          //   // child: ListView.builder(
-          //   //     padding: EdgeInsets.zero,
-          //   //     itemCount: myChat.length,
-          //   //     itemBuilder: (context, index) => myChat[index]),
-          // ),
         ],
       ),
     );

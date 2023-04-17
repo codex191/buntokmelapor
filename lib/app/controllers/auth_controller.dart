@@ -106,7 +106,7 @@ class AuthController extends GetxController {
           final role = currUser.get('role');
 
           if (role == "user") {
-            Get.offAllNamed(Routes.HOME);
+            Get.offAllNamed(Routes.ADMIN_CHAT);
           } else {
             Get.offAllNamed(Routes.HOME_ADMIN);
           }
@@ -224,7 +224,7 @@ class AuthController extends GetxController {
           final role = currUser.get('role');
 
           if (role == "user") {
-            Get.offAllNamed(Routes.HOME);
+            Get.offAllNamed(Routes.ADMIN_CHAT);
           } else {
             Get.offAllNamed(Routes.HOME_ADMIN);
           }
@@ -392,14 +392,15 @@ class AuthController extends GetxController {
 
         user.refresh();
       } else {
-        // buat baru , mereka berdua benar2 belum ada koneksi
+        // buat baru collection jika user dan admin belum ada koneksi
         final newChatDoc = await chats.add({
           "connections": [
             _currentUser!.email,
             friendEmail,
           ],
-          "chat": [],
         });
+
+        await chats.doc(newChatDoc.id).collection("chat");
 
         await users
             .doc(_currentUser!.email)
@@ -443,6 +444,9 @@ class AuthController extends GetxController {
 
     print(chat_id);
 
-    Get.toNamed(Routes.CHAT, arguments: chat_id);
+    Get.toNamed(Routes.CHAT, arguments: {
+      "chat_id": "$chat_id",
+      "friendEmail": friendEmail,
+    });
   }
 }

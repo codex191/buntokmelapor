@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
               initialRoute: authC.isSkipIntro.isTrue
                   ? authC.isAuth.isTrue
                       ? Routes.HOME
-                      : Routes.LOGIN
+                      // : Routes.LOGIN
+                      : Routes.ADMIN_CHAT
                   : Routes.INTRODUCTION,
               getPages: AppPages.routes,
             ),

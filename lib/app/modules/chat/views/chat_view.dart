@@ -1,3 +1,4 @@
+import 'package:buntokmelapor/app/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -5,7 +6,7 @@ import 'package:get/get.dart';
 import '../controllers/chat_controller.dart';
 
 class ChatView extends GetView<ChatController> {
-  const ChatView({Key? key}) : super(key: key);
+  final authC = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +58,10 @@ class ChatView extends GetView<ChatController> {
                 Material(
                   color: Colors.blueAccent,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () => controller.newChat(
+                        authC.user.value.email!,
+                        Get.arguments as Map<String, dynamic>,
+                        controller.chatC.text),
                     child: Padding(
                       padding: const EdgeInsets.all(15),
                       child: Icon(
