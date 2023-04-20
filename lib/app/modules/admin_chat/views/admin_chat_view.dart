@@ -9,6 +9,7 @@ import '../controllers/admin_chat_controller.dart';
 
 class AdminChatView extends GetView<AdminChatController> {
   final authC = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,14 +81,10 @@ class AdminChatView extends GetView<AdminChatController> {
                                       horizontal: 20,
                                       vertical: 5,
                                     ),
-                                    onTap: () => Get.toNamed(
-                                      Routes.CHAT,
-                                      arguments: {
-                                        "chat_id": "${listDocsChats[index].id}",
-                                        "friendEmail": listDocsChats[index]
-                                            ["connection"],
-                                      },
-                                    ),
+                                    onTap: () => controller.goToChatRoom(
+                                        "${listDocsChats[index].id}",
+                                        authC.user.value.email!,
+                                        listDocsChats[index]["connection"]),
                                     leading: CircleAvatar(
                                       radius: 30,
                                       backgroundColor: Colors.black26,
@@ -130,14 +127,10 @@ class AdminChatView extends GetView<AdminChatController> {
                                       horizontal: 20,
                                       vertical: 5,
                                     ),
-                                    onTap: () => Get.toNamed(
-                                      Routes.CHAT,
-                                      arguments: {
-                                        "chat_id": "${listDocsChats[index].id}",
-                                        "friendEmail": listDocsChats[index]
-                                            ["connection"],
-                                      },
-                                    ),
+                                    onTap: () => controller.goToChatRoom(
+                                        "${listDocsChats[index].id}",
+                                        authC.user.value.email!,
+                                        listDocsChats[index]["connection"]),
                                     leading: CircleAvatar(
                                       radius: 30,
                                       backgroundColor: Colors.black26,

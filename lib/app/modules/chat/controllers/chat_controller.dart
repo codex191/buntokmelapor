@@ -40,24 +40,29 @@ class ChatController extends GetxController {
         .get();
 
     if (checkChatsFriend.exists) {
-      await users
-          .doc(argument["friendEmail"])
-          .collection("chats")
-          .doc(argument["chat_id"])
-          .get()
-          .then((value) => total_unread = value.data()!["total_unread"] as int);
+      // Jika ada di user database
+      // Cek total unread
 
-      // update for friend database
+      final checkTotalUnread = await chats
+          .doc(argument["chat_id"])
+          .collection("chat")
+          .where("isRead", isEqualTo: false)
+          .where("pengirim", isEqualTo: email)
+          .get();
+
+      // Total unread user(pengadu)
+      total_unread = checkTotalUnread.docs.length;
+
       await users
           .doc(argument["friendEmail"])
           .collection("chats")
           .doc(argument["chat_id"])
           .update({
         "lastTime": date,
-        "total_unread": total_unread + 1,
+        "total_unread": total_unread,
       });
     } else {
-      // new for friend database
+      // Jika tidak ada di user database
       await users
           .doc(argument["friendEmail"])
           .collection("chats")
@@ -65,7 +70,7 @@ class ChatController extends GetxController {
           .set({
         "connection": email,
         "lastTime": date,
-        "total_unread": total_unread + 1,
+        "total_unread": 1,
       });
     }
   }
