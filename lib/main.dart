@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
                   ? authC.isAuth.isTrue
                       ? Routes.HOME
                       // : Routes.LOGIN
-                      : Routes.ADMIN_CHAT
+                      : Routes.LOGIN
                   : Routes.INTRODUCTION,
               getPages: AppPages.routes,
             ),

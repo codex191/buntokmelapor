@@ -3,11 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ChatController extends GetxController {
-  //TODO: Implement ChatController
-
   late TextEditingController chatC;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  int total_unread = 0;
 
   @override
   void onInit() {
@@ -15,16 +14,60 @@ class ChatController extends GetxController {
     super.onInit();
   }
 
-  void newChat(String email, Map<String, dynamic> arguments, String chat) {
+  void newChat(String email, Map<String, dynamic> argument, String chat) async {
     CollectionReference chats = firestore.collection("chats");
+    CollectionReference users = firestore.collection("users");
 
-    chats.doc(arguments["chat_id"]).collection("chat").add({
-      "pemgirim": email,
-      "penerima": arguments["friendEmail"],
+    String date = DateTime.now().toIso8601String();
+
+    final newchat =
+        await chats.doc(argument["chat_id"]).collection("chat").add({
+      "pengirim": email,
+      "penerima": argument["friendEmail"],
       "msg": chat,
-      "time": DateTime.now().toIso8601String(),
+      "time": date,
       "isRead": false,
     });
+
+    await users.doc(email).collection("chats").doc(argument["chat_id"]).update({
+      "lastTime": date,
+    });
+
+    final checkChatsFriend = await users
+        .doc(argument["friendEmail"])
+        .collection("chats")
+        .doc(argument["chat_id"])
+        .get();
+
+    if (checkChatsFriend.exists) {
+      await users
+          .doc(argument["friendEmail"])
+          .collection("chats")
+          .doc(argument["chat_id"])
+          .get()
+          .then((value) => total_unread = value.data()!["total_unread"] as int);
+
+      // update for friend database
+      await users
+          .doc(argument["friendEmail"])
+          .collection("chats")
+          .doc(argument["chat_id"])
+          .update({
+        "lastTime": date,
+        "total_unread": total_unread + 1,
+      });
+    } else {
+      // new for friend database
+      await users
+          .doc(argument["friendEmail"])
+          .collection("chats")
+          .doc(argument["chat_id"])
+          .set({
+        "connection": email,
+        "lastTime": date,
+        "total_unread": total_unread + 1,
+      });
+    }
   }
 
   @override

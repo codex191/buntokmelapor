@@ -12,27 +12,12 @@ class AdminChatView extends GetView<AdminChatController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        child: AppBar(
-          backgroundColor: Colors.transparent,
-          actions: [
-            IconButton(
-                onPressed: () => Get.toNamed(Routes.SEARCH_CHAT),
-                icon: Icon(
-                  Icons.search_outlined,
-                  color: Colors.black,
-                ))
-          ],
-          leading: IconButton(
-              onPressed: () => Get.back(),
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              )),
-          flexibleSpace: Material(
-            elevation: 0,
+      body: Column(
+        children: [
+          Material(
+            elevation: 5,
             child: Container(
-              margin: EdgeInsets.only(top: 40),
+              margin: EdgeInsets.only(top: context.mediaQueryPadding.top),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -45,21 +30,32 @@ class AdminChatView extends GetView<AdminChatController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Kontak Masuk",
+                    "Chats",
                     style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Material(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.red[900],
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(50),
+                      onTap: () => Get.toNamed(Routes.PROFILE),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Icon(
+                          Icons.person,
+                          size: 35,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-        ),
-        preferredSize: Size.fromHeight(110),
-      ),
-      body: Column(
-        children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
               stream: controller.chatsStream(authC.user.value.email!),
@@ -78,58 +74,114 @@ class AdminChatView extends GetView<AdminChatController> {
                           if (snapshot2.connectionState ==
                               ConnectionState.active) {
                             var data = snapshot2.data!.data();
-                            return ListTile(
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 5,
-                              ),
-                              onTap: () => Get.toNamed(
-                                Routes.CHAT,
-                                arguments: {
-                                  "chat_id": "${listDocsChats[index].id}",
-                                  "friendEmail": listDocsChats[index]
-                                      ["connection"],
-                                },
-                              ),
-                              leading: CircleAvatar(
-                                radius: 30,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: data!["photoUrl"] == "noimage"
-                                      ? Image.asset(
-                                          "assets/logo/LogoKominfoTanpaTeks.png",
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.network("${data["photoUrl"]}"),
-                                ),
-                              ),
-                              title: Text(
-                                "${data["name"]}",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              subtitle: Text(
-                                "${data["email"]}",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              trailing:
-                                  listDocsChats[index]["total_unread"] == 0
-                                      ? SizedBox()
-                                      : Chip(
-                                          backgroundColor: Colors.blueAccent,
-                                          label: Text(
-                                            "${listDocsChats[index]["total_unread"]}",
-                                            style: TextStyle(
-                                              color: Colors.white,
+                            return data!["status"] == ""
+                                ? ListTile(
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 5,
+                                    ),
+                                    onTap: () => Get.toNamed(
+                                      Routes.CHAT,
+                                      arguments: {
+                                        "chat_id": "${listDocsChats[index].id}",
+                                        "friendEmail": listDocsChats[index]
+                                            ["connection"],
+                                      },
+                                    ),
+                                    leading: CircleAvatar(
+                                      radius: 30,
+                                      backgroundColor: Colors.black26,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: data["photoUrl"] == "noimage"
+                                            ? Image.asset(
+                                                "assets/logo/noimage.png",
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                "${data["photoUrl"]}",
+                                                fit: BoxFit.cover,
+                                              ),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      "${data["name"]}",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    trailing: listDocsChats[index]
+                                                ["total_unread"] ==
+                                            0
+                                        ? SizedBox()
+                                        : Chip(
+                                            backgroundColor: Colors.red[900],
+                                            label: Text(
+                                              "${listDocsChats[index]["total_unread"]}",
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
                                           ),
-                                        ),
-                            );
+                                  )
+                                : ListTile(
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 5,
+                                    ),
+                                    onTap: () => Get.toNamed(
+                                      Routes.CHAT,
+                                      arguments: {
+                                        "chat_id": "${listDocsChats[index].id}",
+                                        "friendEmail": listDocsChats[index]
+                                            ["connection"],
+                                      },
+                                    ),
+                                    leading: CircleAvatar(
+                                      radius: 30,
+                                      backgroundColor: Colors.black26,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: data["photoUrl"] == "noimage"
+                                            ? Image.asset(
+                                                "assets/logo/noimage.png",
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                "${data["photoUrl"]}",
+                                                fit: BoxFit.cover,
+                                              ),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      "${data["name"]}",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      "${data["status"]}",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    trailing: listDocsChats[index]
+                                                ["total_unread"] ==
+                                            0
+                                        ? SizedBox()
+                                        : Chip(
+                                            backgroundColor: Colors.red[900],
+                                            label: Text(
+                                              "${listDocsChats[index]["total_unread"]}",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                  );
                           }
                           return Center(
                             child: CircularProgressIndicator(),

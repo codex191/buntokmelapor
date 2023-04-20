@@ -224,7 +224,7 @@ class AuthController extends GetxController {
           final role = currUser.get('role');
 
           if (role == "user") {
-            Get.offAllNamed(Routes.ADMIN_CHAT);
+            Get.offAllNamed(Routes.HOME);
           } else {
             Get.offAllNamed(Routes.HOME_ADMIN);
           }

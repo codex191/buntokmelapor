@@ -56,6 +56,7 @@ class ChatView extends GetView<ChatController> {
                   width: 10,
                 ),
                 Material(
+                  borderRadius: BorderRadius.circular(100),
                   color: Colors.blueAccent,
                   child: InkWell(
                     onTap: () => controller.newChat(
