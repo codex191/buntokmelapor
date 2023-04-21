@@ -14,6 +14,12 @@ class ChatController extends GetxController {
     super.onInit();
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamChats(String chat_id) {
+    CollectionReference chats = firestore.collection("chats");
+
+    return chats.doc(chat_id).collection("chat").orderBy("time").snapshots();
+  }
+
   void newChat(String email, Map<String, dynamic> argument, String chat) async {
     CollectionReference chats = firestore.collection("chats");
     CollectionReference users = firestore.collection("users");
@@ -73,6 +79,8 @@ class ChatController extends GetxController {
         "total_unread": 1,
       });
     }
+
+    chatC.clear();
   }
 
   @override

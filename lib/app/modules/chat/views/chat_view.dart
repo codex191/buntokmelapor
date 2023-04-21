@@ -1,4 +1,5 @@
 import 'package:buntokmelapor/app/controllers/auth_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import '../controllers/chat_controller.dart';
 
 class ChatView extends GetView<ChatController> {
   final authC = Get.find<AuthController>();
+  final String chat_id = (Get.arguments as Map<String, dynamic>)["chat_id"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,16 +24,38 @@ class ChatView extends GetView<ChatController> {
         children: [
           Expanded(
             child: Container(
-              child: ListView(
-                children: [
-                  ItemChat(
-                    isSender: true,
-                  ),
-                  ItemChat(
-                    isSender: false,
-                  ),
-                ],
-              ),
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: controller.streamChats(chat_id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      var alldata = snapshot.data!.docs;
+                      return ListView.builder(
+                        itemCount: alldata.length,
+                        itemBuilder: (context, index) => ItemChat(
+                          isSender: alldata[index]["pengirim"] ==
+                                  authC.user.value.email!
+                              ? true
+                              : false,
+                          msg: "${alldata[index]["msg"]}",
+                        ),
+                      );
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
+              // child: ListView(
+              //   children: [
+              //     ItemChat(
+              //       msg: "Haloo",
+              //       isSender: true,
+              //     ),
+              //     ItemChat(
+              //       msg: "Halo...",
+              //       isSender: false,
+              //     ),
+              //   ],
+              // ),
             ),
           ),
           Container(
@@ -85,9 +109,11 @@ class ItemChat extends StatelessWidget {
   const ItemChat({
     super.key,
     required this.isSender,
+    required this.msg,
   });
 
   final bool isSender;
+  final String msg;
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +143,7 @@ class ItemChat extends StatelessWidget {
             //color: Colors.blueAccent,
             padding: EdgeInsets.all(15),
             child: Text(
-              "Halo Admin",
+              "$msg",
               style: TextStyle(
                 color: Colors.white,
               ),
