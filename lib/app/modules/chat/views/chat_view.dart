@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:buntokmelapor/app/controllers/auth_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +15,105 @@ class ChatView extends GetView<ChatController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Get.back(),
+        leading: InkWell(
+          onTap: () => Get.back(),
+          borderRadius: BorderRadius.circular(100),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(width: 5),
+              Icon(Icons.arrow_back),
+              SizedBox(width: 5),
+              CircleAvatar(
+                radius: 25,
+                backgroundColor: Colors.grey,
+                child: StreamBuilder<DocumentSnapshot<Object?>>(
+                    stream: controller.streamFriendData(
+                        (Get.arguments as Map<String, dynamic>)["friendEmail"]),
+                    builder: (context, snapFriendUser) {
+                      if (snapFriendUser.connectionState ==
+                          ConnectionState.active) {
+                        var dataFriend =
+                            snapFriendUser.data!.data() as Map<String, dynamic>;
+                        if (dataFriend["photoUrl"] == "noimage") {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.asset(
+                              "assets/logo/LogoKominfoTanpaTeks.png",
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        } else {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.network(
+                              dataFriend["photoUrl"],
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        }
+                      }
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.asset(
+                          "assets/logo/LogoKominfoTanpaTeks.png",
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    }),
+              )
+            ],
+          ),
         ),
-        title: const Text('Admin Bunlapor'),
-        centerTitle: true,
+        title: StreamBuilder<DocumentSnapshot<Object?>>(
+          stream: controller.streamFriendData(
+              (Get.arguments as Map<String, dynamic>)["friendEmail"]),
+          builder: (context, snapFriendUser) {
+            if (snapFriendUser.connectionState == ConnectionState.active) {
+              var dataFriend =
+                  snapFriendUser.data!.data() as Map<String, dynamic>;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    dataFriend["name"],
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    dataFriend["email"],
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              );
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Memuat Data....",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  "Memuat Data.....",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+        centerTitle: false,
       ),
       body: Column(
         children: [
@@ -27,9 +122,14 @@ class ChatView extends GetView<ChatController> {
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                   stream: controller.streamChats(chat_id),
                   builder: (context, snapshot) {
+                    Timer(Duration.zero, () {
+                      controller.scrollC
+                          .jumpTo(controller.scrollC.position.maxScrollExtent);
+                    });
                     if (snapshot.connectionState == ConnectionState.active) {
                       var alldata = snapshot.data!.docs;
                       return ListView.builder(
+                        controller: controller.scrollC,
                         itemCount: alldata.length,
                         itemBuilder: (context, index) => ItemChat(
                           isSender: alldata[index]["pengirim"] ==
@@ -37,6 +137,7 @@ class ChatView extends GetView<ChatController> {
                               ? true
                               : false,
                           msg: "${alldata[index]["msg"]}",
+                          time: "${alldata[index]["time"]}",
                         ),
                       );
                     }
@@ -69,7 +170,12 @@ class ChatView extends GetView<ChatController> {
                 Expanded(
                   child: Container(
                     child: TextField(
+                      autocorrect: false,
                       controller: controller.chatC,
+                      onEditingComplete: () => controller.newChat(
+                          authC.user.value.email!,
+                          Get.arguments as Map<String, dynamic>,
+                          controller.chatC.text),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                       ),
@@ -110,10 +216,12 @@ class ItemChat extends StatelessWidget {
     super.key,
     required this.isSender,
     required this.msg,
+    required this.time,
   });
 
   final bool isSender;
   final String msg;
+  final String time;
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +260,7 @@ class ItemChat extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          Text("13:22"),
+          Text(time),
         ],
       ),
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
