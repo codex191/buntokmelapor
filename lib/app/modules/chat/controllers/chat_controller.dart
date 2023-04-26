@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ChatController extends GetxController {
   late TextEditingController chatC;
@@ -43,11 +44,13 @@ class ChatController extends GetxController {
         "msg": chat,
         "time": date,
         "isRead": false,
+        "groupTime": DateFormat.yMMMMd('en_US').format(DateTime.parse(date)),
       });
 
-      Timer(Duration.zero, () {
-        scrollC.jumpTo(scrollC.position.maxScrollExtent);
-      });
+      Timer(
+        Duration.zero,
+        () => scrollC.jumpTo(scrollC.position.maxScrollExtent),
+      );
 
       chatC.clear();
 
