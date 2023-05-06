@@ -1,9 +1,15 @@
 {
-    "uid": "1vJduoon34gj37GVZl3NDJcm93J2",
-    "email": "agustianbrian25@gmail.com",
-    "name": "193 066 Brian Agustian Kristianto",
-    "Judul": "Jalan Rusak",
-    "tanggalAduan": "2023-03-21T13:48:57.766Z",
-    "aduan": "Jalan ini berlubang dan perlu diperbaiki segera.",
-    "photoAduan": "s"
+    "id": "A1",
+    "judul": "agustianbrian25@gmail.com",
+    "deskripsi": "Jalan Rusak",
+    "lokasi": "Buntok",
+    "status": "disetujui",
+    "tanggalDibuat": "Jalan ini berlubang dan perlu diperbaiki segera.",
+    "tanggalDiperbaharui": "s",
+    "instansi": "Dinas Pekerjaan Umum dan Pekerjaan Umum Kabupaten Barito Selatan",
+    "kategori": "Infrastruktur",
+    "gambar": "gambar.jpg",
+    "disetujui": true,
+    "tanggalDisetujui": "2023-03-21T13:48:57.766Z",
+    "batasWaktu": "2023-03-21T13:48:57.766Z"
 }
