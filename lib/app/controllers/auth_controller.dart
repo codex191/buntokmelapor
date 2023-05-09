@@ -2,6 +2,7 @@ import 'package:buntokmelapor/app/data/models/users_model.dart';
 import 'package:buntokmelapor/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -106,7 +107,7 @@ class AuthController extends GetxController {
           final role = currUser.get('role');
 
           if (role == "user") {
-            Get.offAllNamed(Routes.ADMIN_CHAT);
+            Get.offAllNamed(Routes.HOME_ADMIN);
           } else {
             Get.offAllNamed(Routes.HOME_ADMIN);
           }
@@ -239,9 +240,11 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
+    // keluar dari akun Google
     await _googleSignIn.disconnect();
     await _googleSignIn.signOut();
 
+    // mengarahkan ke halaman login
     Get.offAllNamed(Routes.LOGIN);
   }
 

@@ -108,7 +108,8 @@ class HomeView extends GetView<HomeController> {
             //mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                  onPressed: () {}, child: const Text('Masukan Laporan Anda')),
+                  onPressed: () => Get.toNamed(Routes.ADUAN_PAGE),
+                  child: const Text('Masukan Laporan Anda')),
               Expanded(
                 child: Text(""),
               ),
