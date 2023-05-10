@@ -15,6 +15,7 @@ abstract class Routes {
   static const ADMIN_CHAT = _Paths.ADMIN_CHAT;
   static const SEARCH_CHAT = _Paths.SEARCH_CHAT;
   static const FEEDBACK_PAGE = _Paths.FEEDBACK_PAGE;
+  static const LIST_ADUAN_USER = _Paths.LIST_ADUAN_USER;
 }
 
 abstract class _Paths {
@@ -31,4 +32,5 @@ abstract class _Paths {
   static const ADMIN_CHAT = '/admin-chat';
   static const SEARCH_CHAT = '/search-chat';
   static const FEEDBACK_PAGE = '/feedback-page';
+  static const LIST_ADUAN_USER = '/list-aduan-user';
 }

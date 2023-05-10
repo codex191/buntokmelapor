@@ -16,6 +16,8 @@ import '../modules/home_admin/bindings/home_admin_binding.dart';
 import '../modules/home_admin/views/home_admin_view.dart';
 import '../modules/introduction/bindings/introduction_binding.dart';
 import '../modules/introduction/views/introduction_view.dart';
+import '../modules/list_aduan_user/bindings/list_aduan_user_binding.dart';
+import '../modules/list_aduan_user/views/list_aduan_user_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/pertanyaan/bindings/pertanyaan_binding.dart';
@@ -90,6 +92,11 @@ class AppPages {
       name: _Paths.FEEDBACK_PAGE,
       page: () => FeedbackPageView(),
       binding: FeedbackPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.LIST_ADUAN_USER,
+      page: () => ListAduanUserView(),
+      binding: ListAduanUserBinding(),
     ),
   ];
 }

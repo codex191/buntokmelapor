@@ -40,6 +40,7 @@ class AduanPageController extends GetxController {
           'judul': judul.value,
           'deskripsi': deskripsi.value,
           'pengirim': authC.user.value.name,
+          'pengadu': authC.user.value.email,
           'kategori': kategori.value,
           'gambarUrl': gambarUrl.value,
           'tanggal': tanggal,
