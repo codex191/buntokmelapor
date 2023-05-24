@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
 
 class AdminChatController extends GetxController {
-  //TODO: Implement AdminChatController
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 

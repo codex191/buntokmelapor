@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 
+import '../modules/AduanAnalisis/bindings/aduan_analisis_binding.dart';
+import '../modules/AduanAnalisis/views/aduan_analisis_view.dart';
+import '../modules/AduanChart/bindings/aduan_chart_binding.dart';
+import '../modules/AduanChart/views/aduan_chart_view.dart';
 import '../modules/admin_chat/bindings/admin_chat_binding.dart';
 import '../modules/admin_chat/views/admin_chat_view.dart';
 import '../modules/aduan_page/bindings/aduan_page_binding.dart';
@@ -97,6 +101,16 @@ class AppPages {
       name: _Paths.LIST_ADUAN_USER,
       page: () => ListAduanUserView(),
       binding: ListAduanUserBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADUAN_ANALISIS,
+      page: () => const AduanAnalisisView(),
+      binding: AduanAnalisisBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADUAN_CHART,
+      page: () => const AduanChartView(),
+      binding: AduanChartBinding(),
     ),
   ];
 }

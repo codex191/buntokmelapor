@@ -2,7 +2,7 @@ import 'package:buntokmelapor/app/data/models/users_model.dart';
 import 'package:buntokmelapor/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -136,6 +136,14 @@ class AuthController extends GetxController {
       if (isSignin) {
         // kondisi sudah login
         print("Berhasil Login");
+        Get.snackbar(
+          'Berhasil',
+          'Berhasil Login',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
         print(_currentUser);
 
         final googleAuth = await _currentUser!.authentication;

@@ -83,8 +83,7 @@ class AduanPageView extends GetView<AduanPageController> {
     "Kerusakan Jalan",
     "Kerusakan Fasilitas Publik",
     "Pelayanan Publik",
-    "Kebersihan",
-    "Kemacetan",
+    "Pendidikan",
     "Ketertiban & Keamanan",
     "Lainnya"
   ];
