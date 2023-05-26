@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../controllers/aduan_page_controller.dart';
 
+// ignore: must_be_immutable
 class AduanPageView extends GetView<AduanPageController> {
   final AuthController userController = Get.find<AuthController>();
   final picker = ImagePicker();

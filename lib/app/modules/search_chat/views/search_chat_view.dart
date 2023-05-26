@@ -1,7 +1,5 @@
 import 'package:buntokmelapor/app/controllers/auth_controller.dart';
-import 'package:buntokmelapor/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
