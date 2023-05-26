@@ -20,6 +20,7 @@ class AduanAnalisisController extends GetxController {
     _fetchData();
     super.onInit();
   }
+  
 
   Future<void> _fetchData() async {
     CollectionReference aduanCollection =
@@ -63,4 +64,6 @@ class AduanAnalisisController extends GetxController {
     chartDataByYear.assignAll(tahunCountMap.entries.map((entry) =>
         {'tahun': entry.key, 'jumlah': entry.value}).toList());
   }
+
+  
 }
