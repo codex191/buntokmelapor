@@ -18,6 +18,11 @@ abstract class Routes {
   static const LIST_ADUAN_USER = _Paths.LIST_ADUAN_USER;
   static const ADUAN_ANALISIS = _Paths.ADUAN_ANALISIS;
   static const ADUAN_CHART = _Paths.ADUAN_CHART;
+  static const LIST_ADUAN_MASUK_ADMIN = _Paths.LIST_ADUAN_MASUK_ADMIN;
+  static const DETAIL_ADUAN_MASUK_ADMIN = _Paths.DETAIL_ADUAN_MASUK_ADMIN;
+  static const DETAIL_ADUAN_PROSES_ADMIN = _Paths.DETAIL_ADUAN_PROSES_ADMIN;
+  static const DETAIL_ADUAN_SELESAI_ADMIN = _Paths.DETAIL_ADUAN_SELESAI_ADMIN;
+  static const LIST_ADUAN_PROSES_ADMIN = _Paths.LIST_ADUAN_PROSES_ADMIN;
 }
 
 abstract class _Paths {
@@ -37,4 +42,9 @@ abstract class _Paths {
   static const LIST_ADUAN_USER = '/list-aduan-user';
   static const ADUAN_ANALISIS = '/aduan-analisis';
   static const ADUAN_CHART = '/aduan-chart';
+  static const LIST_ADUAN_MASUK_ADMIN = '/list-aduan-masuk-admin';
+  static const DETAIL_ADUAN_MASUK_ADMIN = '/detail-aduan-masuk-admin';
+  static const DETAIL_ADUAN_PROSES_ADMIN = '/detail-aduan-proses-admin';
+  static const DETAIL_ADUAN_SELESAI_ADMIN = '/detail-aduan-selesai-admin';
+  static const LIST_ADUAN_PROSES_ADMIN = '/list-aduan-proses-admin';
 }

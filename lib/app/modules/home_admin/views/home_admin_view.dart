@@ -55,6 +55,16 @@ class HomeAdminView extends GetView<HomeAdminController> {
               ),
               ListTile(
                 leading: const Icon(Icons.chat),
+                title: const Text('Aduan Masuk'),
+                onTap: () => Get.toNamed(Routes.LIST_ADUAN_MASUK_ADMIN),
+              ),
+              ListTile(
+                leading: const Icon(Icons.chat),
+                title: const Text('Aduan Diproses'),
+                onTap: () => Get.toNamed(Routes.LIST_ADUAN_PROSES_ADMIN),
+              ),
+              ListTile(
+                leading: const Icon(Icons.chat),
                 title: const Text('Analisis Data Aduan'),
                 onTap: () => Get.toNamed(Routes.ADUAN_ANALISIS),
               ),

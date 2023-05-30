@@ -12,6 +12,12 @@ import '../modules/change_profile/bindings/change_profile_binding.dart';
 import '../modules/change_profile/views/change_profile_view.dart';
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
+import '../modules/detail_aduan_masuk_admin/bindings/detail_aduan_masuk_admin_binding.dart';
+import '../modules/detail_aduan_masuk_admin/views/detail_aduan_masuk_admin_view.dart';
+import '../modules/detail_aduan_proses_admin/bindings/detail_aduan_proses_admin_binding.dart';
+import '../modules/detail_aduan_proses_admin/views/detail_aduan_proses_admin_view.dart';
+import '../modules/detail_aduan_selesai_admin/bindings/detail_aduan_selesai_admin_binding.dart';
+import '../modules/detail_aduan_selesai_admin/views/detail_aduan_selesai_admin_view.dart';
 import '../modules/feedback_page/bindings/feedback_page_binding.dart';
 import '../modules/feedback_page/views/feedback_page_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -20,6 +26,10 @@ import '../modules/home_admin/bindings/home_admin_binding.dart';
 import '../modules/home_admin/views/home_admin_view.dart';
 import '../modules/introduction/bindings/introduction_binding.dart';
 import '../modules/introduction/views/introduction_view.dart';
+import '../modules/list_aduan_masuk_admin/bindings/list_aduan_masuk_admin_binding.dart';
+import '../modules/list_aduan_masuk_admin/views/list_aduan_masuk_admin_view.dart';
+import '../modules/list_aduan_proses_admin/bindings/list_aduan_proses_admin_binding.dart';
+import '../modules/list_aduan_proses_admin/views/list_aduan_proses_admin_view.dart';
 import '../modules/list_aduan_user/bindings/list_aduan_user_binding.dart';
 import '../modules/list_aduan_user/views/list_aduan_user_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -111,6 +121,31 @@ class AppPages {
       name: _Paths.ADUAN_CHART,
       page: () => const AduanChartView(),
       binding: AduanChartBinding(),
+    ),
+    GetPage(
+      name: _Paths.LIST_ADUAN_MASUK_ADMIN,
+      page: () => const ListAduanMasukAdminView(),
+      binding: ListAduanMasukAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_ADUAN_MASUK_ADMIN,
+      page: () => const DetailAduanMasukAdminView(),
+      binding: DetailAduanMasukAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_ADUAN_PROSES_ADMIN,
+      page: () => const DetailAduanProsesAdminView(),
+      binding: DetailAduanProsesAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_ADUAN_SELESAI_ADMIN,
+      page: () => const DetailAduanSelesaiAdminView(),
+      binding: DetailAduanSelesaiAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.LIST_ADUAN_PROSES_ADMIN,
+      page: () => const ListAduanProsesAdminView(),
+      binding: ListAduanProsesAdminBinding(),
     ),
   ];
 }
