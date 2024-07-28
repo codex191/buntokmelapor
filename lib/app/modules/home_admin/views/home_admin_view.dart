@@ -10,7 +10,6 @@ import '../controllers/home_admin_controller.dart';
 // ignore: must_be_immutable
 class HomeAdminView extends GetView<HomeAdminController> {
   final authC = Get.find<AuthController>();
-  var friendEmail = "codexgaming191@gmail.com";
 
   Stream<DateTime> clockStream =
       Stream<DateTime>.periodic(Duration(seconds: 1), (i) => DateTime.now());
@@ -71,31 +70,30 @@ class HomeAdminView extends GetView<HomeAdminController> {
                     .toList()
                     .length;
 
-                return Expanded(
-                  child: GridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: 3,
-                    padding: const EdgeInsets.all(12),
-                    mainAxisSpacing: 14,
-                    crossAxisSpacing: 14,
-                    children: [
-                      _buildCard(
-                        title: 'TOTAL LAPORAN MASUK',
-                        value: totalReports.toString(),
-                        color: Colors.blueAccent,
-                      ),
-                      _buildCard(
-                        title: 'LAPORAN BELUM SELESAI',
-                        value: unresolvedReports.toString(),
-                        color: Colors.orange,
-                      ),
-                      _buildCard(
-                        title: 'LAPORAN SELESAI',
-                        value: resolvedReports.toString(),
-                        color: Colors.green,
-                      ),
-                    ],
-                  ),
+                return GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 3,
+                  padding: const EdgeInsets.all(12),
+                  mainAxisSpacing: 14,
+                  crossAxisSpacing: 14,
+                  children: [
+                    _buildCard(
+                      title: 'TOTAL LAPORAN MASUK',
+                      value: totalReports.toString(),
+                      color: Colors.blueAccent,
+                    ),
+                    _buildCard(
+                      title: 'LAPORAN BELUM SELESAI',
+                      value: unresolvedReports.toString(),
+                      color: Colors.orange,
+                    ),
+                    _buildCard(
+                      title: 'LAPORAN SELESAI',
+                      value: resolvedReports.toString(),
+                      color: Colors.green,
+                    ),
+                    
+                  ],
                 );
               },
             ),
@@ -225,48 +223,51 @@ class HomeAdminView extends GetView<HomeAdminController> {
 
 Widget _buildCard(
     {required String title, required String value, required Color color}) {
-  return Card(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    elevation: 5,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12),
-              topRight: Radius.circular(12),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
-            ),
+return Card(
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(12),
+  ),
+  elevation: 5,
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
           ),
         ),
-        Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+      Expanded(
+        child: SizedBox(
+          height: 80,
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Text(
               value,
               style: TextStyle(
-                fontSize: 36,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
           ),
         ),
-      ],
-    ),
-  );
+      ),
+    ],
+  ),
+);
 }

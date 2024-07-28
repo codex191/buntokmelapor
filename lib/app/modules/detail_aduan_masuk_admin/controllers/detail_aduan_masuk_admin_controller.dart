@@ -47,6 +47,7 @@ void editAduanProses(String docID) async {
           "deadline": formattedDeadline,
         });
         Get.back();
+        Get.back();
       }),
       onCancel: () {},
     );

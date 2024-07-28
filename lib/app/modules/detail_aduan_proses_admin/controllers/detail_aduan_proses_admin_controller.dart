@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/notification_helper.dart';
+
 class DetailAduanProsesAdminController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late TextEditingController catatan = TextEditingController();
@@ -23,11 +25,12 @@ class DetailAduanProsesAdminController extends GetxController {
       Get.defaultDialog(
         title: "Peringatan",
         middleText:
-            "Apakah Anda yakin ingin memproses aduan ini? Setelah Anda menekan tombol ini, maka akan ada waktu 14 hari untuk menyelesaikan aduan ini.",
+            "Apakah Anda yakin ingin menyelesaikan aduan ini? Setelah Anda menekan tombol ini, aduan tidak dapat diubah lagi.",
         onConfirm: (() async {
           await docData.update({
             "status": "Selesai",
           });
+          showNotification('Aduan telah selesai', 'Aduan yang Anda laporkan telah selesai diproses.');
           Get.back();
         }),
         onCancel: () {},

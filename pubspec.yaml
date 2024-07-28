@@ -8,7 +8,7 @@ environment:
 dependencies: 
   cupertino_icons: ^1.0.2
   get: 4.6.5
-  firebase_core: 2.11.0
+  firebase_core: 2.14.0
   google_sign_in: 6.0.2
   firebase_auth: 4.2.2
   lottie: 2.3.0
@@ -22,8 +22,9 @@ dependencies:
   flutter_secure_storage: 8.0.0
   flutter_cupertino_settings: 0.5.0
   syncfusion_flutter_charts: 21.2.6
-  flutter_local_notifications: 14.1.0
+  flutter_local_notifications: 14.1.1
   syncfusion_flutter_pdf: 21.2.8
+  firebase_messaging: ^14.6.3
   flutter: 
     sdk: flutter
 

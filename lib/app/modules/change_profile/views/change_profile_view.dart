@@ -142,7 +142,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blueAccent[900],
+                    backgroundColor: Colors.blueAccent[900],
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
                     ),

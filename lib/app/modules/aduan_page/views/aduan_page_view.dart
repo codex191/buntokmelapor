@@ -134,7 +134,7 @@ class AduanPageView extends GetView<AduanPageController> {
             SizedBox(height: 10),
             Text(
               'Kategori',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             SizedBox(height: 10),
             GestureDetector(
@@ -219,7 +219,7 @@ class AduanPageView extends GetView<AduanPageController> {
               icon: Icon(Icons.send),
               label: Text('Kirim'),
               style: ElevatedButton.styleFrom(
-                primary: Colors.green.shade800,
+                backgroundColor: Colors.green.shade800,
                 fixedSize: Size(double.infinity, 50.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0),
