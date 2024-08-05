@@ -122,10 +122,13 @@ class AuthController extends GetxController {
   }
 
   Future<void> login() async {
-    // Get.offAllNamed(Routes.HOME);
     try {
       //Menghandle bocornya data user sebelum login
       await _googleSignIn.signOut();
+
+      // Reset data pengguna di aplikasi
+      user.value = UsersModel();
+      isAuth.value = false;
 
       // Untuk mendapatkan user google account
       await _googleSignIn.signIn().then((value) => _currentUser = value);
@@ -248,13 +251,21 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
-    // keluar dari akun Google
-    await _googleSignIn.disconnect();
-    await _googleSignIn.signOut();
+  // Keluar dari akun Google
+  await _googleSignIn.disconnect();
+  await _googleSignIn.signOut();
 
-    // mengarahkan ke halaman login
-    Get.offAllNamed(Routes.LOGIN);
-  }
+  // Menghapus semua data pengguna dari GetStorage
+  final box = GetStorage();
+  await box.erase();
+
+  // Reset data pengguna di aplikasi
+  user.value = UsersModel();
+  isAuth.value = false;
+
+  // Mengarahkan ke halaman login
+  Get.offAllNamed(Routes.LOGIN);
+}
 
   //Untuk KriSar
   void addFeedback(String kritik, String saran) async {
