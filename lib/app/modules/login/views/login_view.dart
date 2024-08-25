@@ -46,7 +46,7 @@ class LoginView extends GetView<LoginController> {
                     ),
                     Text(
                       "Masuk dengan Google",
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ],
                 ),

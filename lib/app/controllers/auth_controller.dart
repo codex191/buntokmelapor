@@ -13,9 +13,7 @@ class AuthController extends GetxController {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _currentUser;
   UserCredential? userCredential;
-
   var user = UsersModel().obs;
-
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> firstInitialized() async {
@@ -33,7 +31,6 @@ class AuthController extends GetxController {
   }
 
   Future<bool> skipIntro() async {
-    //mengubah isSkipIntro menjadi true
     final box = GetStorage();
     if (box.read('skipIntro') != null || box.read('skipIntro') == true) {
       return true;
@@ -41,48 +38,34 @@ class AuthController extends GetxController {
     return false;
   }
 
-  // Untuk Login
   Future<bool> autoLogin() async {
-    //mengubah isAuth menjadi true
     try {
       final isSignIn = await _googleSignIn.isSignedIn();
       if (isSignIn) {
-        await _googleSignIn
-            .signInSilently()
-            .then((value) => _currentUser = value);
+        await _googleSignIn.signInSilently().then((value) => _currentUser = value);
         final googleAuth = await _currentUser!.authentication;
-
         final credential = GoogleAuthProvider.credential(
           idToken: googleAuth.idToken,
           accessToken: googleAuth.accessToken,
         );
-
         await FirebaseAuth.instance
             .signInWithCredential(credential)
             .then((value) => userCredential = value);
-        print("user credential");
-        print(userCredential);
 
         // Memasukan data user ke firebase
         CollectionReference users = firestore.collection('users');
-
         await users.doc(_currentUser!.email).update({
-          "lasSignIn":
-              userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+          "lasSignIn": userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
         });
 
         final currUser = await users.doc(_currentUser!.email).get();
         final currUserData = currUser.data() as Map<String, dynamic>;
+        user.value = UsersModel.fromJson(currUserData);
 
-        user(UsersModel.fromJson(currUserData));
-        user.refresh();
-
-        final listChats =
-            await users.doc(_currentUser!.email).collection("chats").get();
-
-        if (listChats.docs.length != 0) {
+        final listChats = await users.doc(_currentUser!.email).collection("chats").get();
+        if (listChats.docs.isNotEmpty) {
           List<ChatUser> dataListChats = [];
-          listChats.docs.forEach((element) {
+          for (var element in listChats.docs) {
             var dataDocChat = element.data();
             var dataDocChatId = element.id;
             dataListChats.add(ChatUser(
@@ -91,7 +74,7 @@ class AuthController extends GetxController {
               lastTime: dataDocChat["lastTime"],
               total_unread: dataDocChat["total_unread"],
             ));
-          });
+          }
           user.update((user) {
             user!.chats = dataListChats;
           });
@@ -101,13 +84,10 @@ class AuthController extends GetxController {
           });
         }
 
-        user.refresh();
-
         if (currUser.exists) {
           final role = currUser.get('role');
-
           if (role == "user") {
-            Get.offAllNamed(Routes.HOME_ADMIN);
+            Get.offAllNamed(Routes.HOME);
           } else {
             Get.offAllNamed(Routes.HOME_ADMIN);
           }
@@ -115,29 +95,25 @@ class AuthController extends GetxController {
 
         return true;
       }
-      return false;
-    } catch (err) {
-      return false;
+    } catch (error) {
+      print(error);
     }
+    return false;
   }
 
   Future<void> login() async {
     try {
-      //Menghandle bocornya data user sebelum login
       await _googleSignIn.signOut();
-
       // Reset data pengguna di aplikasi
       user.value = UsersModel();
       isAuth.value = false;
 
-      // Untuk mendapatkan user google account
+      // Mendapatkan user google account
       await _googleSignIn.signIn().then((value) => _currentUser = value);
 
-      // Untuk mengecek status login user
-      final isSignin = await _googleSignIn.isSignedIn();
-
-      if (isSignin) {
-        // kondisi sudah login
+      // Mengecek status login user
+      final isSignIn = await _googleSignIn.isSignedIn();
+      if (isSignIn) {
         print("Berhasil Login");
         Get.snackbar(
           'Berhasil',
@@ -147,22 +123,17 @@ class AuthController extends GetxController {
           colorText: Colors.white,
           duration: Duration(seconds: 3),
         );
-        print(_currentUser);
 
         final googleAuth = await _currentUser!.authentication;
-
         final credential = GoogleAuthProvider.credential(
           idToken: googleAuth.idToken,
           accessToken: googleAuth.accessToken,
         );
-
         await FirebaseAuth.instance
             .signInWithCredential(credential)
             .then((value) => userCredential = value);
-        print("user credential");
-        print(userCredential);
 
-        //menyimpan status user bahwa sudah pernah login dan tidak akan menampilkan intro kembali
+        // Menyimpan status user bahwa sudah pernah login
         final box = GetStorage();
         if (box.read('skipIntro') != null) {
           box.remove('skipIntro');
@@ -171,10 +142,8 @@ class AuthController extends GetxController {
 
         // Memasukan data user ke firebase
         CollectionReference users = firestore.collection('users');
-
         final checkuser = await users.doc(_currentUser!.email).get();
-
-        if (checkuser.data() == null) {
+        if (!checkuser.exists) {
           await users.doc(_currentUser!.email).set({
             "uid": userCredential!.user!.uid,
             "name": _currentUser!.displayName,
@@ -182,59 +151,45 @@ class AuthController extends GetxController {
             "keyName": _currentUser!.displayName?.substring(0, 1).toUpperCase(),
             "email": _currentUser!.email,
             "photoUrl": _currentUser!.photoUrl ?? "noimage",
-            "creationTime":
-                userCredential!.user!.metadata.creationTime!.toIso8601String(),
-            "lasSignIn": userCredential!.user!.metadata.lastSignInTime!
-                .toIso8601String(),
+            "creationTime": userCredential!.user!.metadata.creationTime!.toIso8601String(),
+            "lasSignIn": userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
             "updatedTime": DateTime.now().toIso8601String(),
           });
-
           await users.doc(_currentUser!.email).collection("chats");
         } else {
           await users.doc(_currentUser!.email).update({
-            "lasSignIn": userCredential!.user!.metadata.lastSignInTime!
-                .toIso8601String(),
+            "lasSignIn": userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
           });
+          final currUser = await users.doc(_currentUser!.email).get();
+          final currUserData = currUser.data() as Map<String, dynamic>;
+          user.value = UsersModel.fromJson(currUserData);
+
+          final listChats = await users.doc(_currentUser!.email).collection("chats").get();
+          if (listChats.docs.isNotEmpty) {
+            List<ChatUser> dataListChats = [];
+            for (var element in listChats.docs) {
+              var dataDocChat = element.data();
+              var dataDocChatId = element.id;
+              dataListChats.add(ChatUser(
+                chatId: dataDocChatId,
+                connection: dataDocChat["connection"],
+                lastTime: dataDocChat["lastTime"],
+                total_unread: dataDocChat["total_unread"],
+              ));
+            }
+            user.update((user) {
+              user!.chats = dataListChats;
+            });
+          } else {
+            user.update((user) {
+              user!.chats = [];
+            });
+          }
         }
-
-        final currUser = await users.doc(_currentUser!.email).get();
-        final currUserData = currUser.data() as Map<String, dynamic>;
-
-        // fix list collection
-        user(UsersModel.fromJson(currUserData));
-        user.refresh();
-
-        final listChats =
-            await users.doc(_currentUser!.email).collection("chats").get();
-
-        if (listChats.docs.length != 0) {
-          List<ChatUser> dataListChats = [];
-          listChats.docs.forEach((element) {
-            var dataDocChat = element.data();
-            var dataDocChatId = element.id;
-            dataListChats.add(ChatUser(
-              chatId: dataDocChatId,
-              connection: dataDocChat["connection"],
-              lastTime: dataDocChat["lastTime"],
-              total_unread: dataDocChat["total_unread"],
-            ));
-          });
-          user.update((user) {
-            user!.chats = dataListChats;
-          });
-        } else {
-          user.update((user) {
-            user!.chats = [];
-          });
-        }
-
-        user.refresh();
 
         isAuth.value = true;
-
-        if (currUser.exists) {
-          final role = currUser.get('role');
-
+        if (checkuser.exists) {
+          final role = checkuser.get('role');
           if (role == "user") {
             Get.offAllNamed(Routes.HOME);
           } else {
@@ -242,121 +197,114 @@ class AuthController extends GetxController {
           }
         }
       } else {
-        //kondisi tidak login
         print("Tidak berhasil Login");
       }
     } catch (error) {
       print(error);
+      Get.snackbar(
+        'Terjadi Kesalahan',
+        'Tidak dapat melakukan login. Silakan coba lagi.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: Duration(seconds: 3),
+      );
     }
   }
 
   Future<void> logout() async {
-  // Keluar dari akun Google
-  await _googleSignIn.disconnect();
-  await _googleSignIn.signOut();
+    await _googleSignIn.disconnect();
+    await _googleSignIn.signOut();
 
-  // Menghapus semua data pengguna dari GetStorage
-  final box = GetStorage();
-  await box.erase();
+    // Menghapus data pengguna dari GetStorage
+    final box = GetStorage();
+    await box.erase();
 
-  // Reset data pengguna di aplikasi
-  user.value = UsersModel();
-  isAuth.value = false;
+    // Reset data pengguna di aplikasi
+    user.value = UsersModel();
+    isAuth.value = false;
 
-  // Mengarahkan ke halaman login
-  Get.offAllNamed(Routes.LOGIN);
-}
+    Get.offAllNamed(Routes.LOGIN);
+  }
 
-  //Untuk KriSar
   void addFeedback(String kritik, String saran) async {
     CollectionReference feedback = firestore.collection("feedback");
-
     try {
       await feedback.add({
         "pengirim": _currentUser!.email,
         "kritik": kritik,
         "saran": saran,
       });
-
       Get.defaultDialog(
-          title: "Berhasil",
-          middleText: "Berhasil menambahkan kritik dan saran",
-          onConfirm: () {
-            Get.back();
-            Get.back();
-          });
+        title: "Berhasil",
+        middleText: "Berhasil menambahkan kritik dan saran",
+        onConfirm: () {
+          Get.back();
+          Get.back();
+        },
+      );
     } catch (e) {
       Get.defaultDialog(
-          title: "Gagal",
-          middleText: "Gagal menambahkan kritik dan saran",
-          onConfirm: () {
-            Get.back();
-          });
+        title: "Gagal",
+        middleText: "Gagal menambahkan kritik dan saran. Silakan coba lagi.",
+        onConfirm: () {
+          Get.back();
+        },
+      );
     }
   }
 
-  // UNTUK PROFILE
   void changeProfile(String name) {
     final date = DateTime.now().toIso8601String();
     CollectionReference users = firestore.collection('users');
-
     users.doc(_currentUser!.email).update({
       "name": name,
       "keyName": name.substring(0, 1).toUpperCase(),
-      "lasSignIn":
-          userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+      "lasSignIn": userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
       "updatedTime": date,
     });
 
-    // update Model
+    // Update Model
     user.update((user) {
       user!.name = name;
       user.keyName = name.substring(0, 1).toUpperCase();
-      user.lastSignIn =
-          userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
+      user.lastSignIn = userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
       user.updatedTime = date;
     });
 
-    user.refresh();
     Get.defaultDialog(
       title: "Update Berhasil",
       middleText: "Berhasil update profile",
     );
   }
 
-  // Untuk Chat
-  void addNewConnection(String friendEmail) async {
+  Future<void> addNewConnection(String friendEmail) async {
     bool flagNewConnection = false;
-    var chat_id;
+    var chatId;
     String date = DateTime.now().toIso8601String();
     CollectionReference chats = firestore.collection("chats");
     CollectionReference users = firestore.collection("users");
 
-    final docChats =
-        await users.doc(_currentUser!.email).collection("chats").get();
+    final docChats = await users.doc(_currentUser!.email).collection("chats").get();
 
-    if (docChats.docs.length != 0) {
-      //user sudah pernah chat dengan siapapun
+    if (docChats.docs.isNotEmpty) {
       final checkConnection = await users
           .doc(_currentUser!.email)
           .collection("chats")
           .where("connection", isEqualTo: friendEmail)
           .get();
 
-      if (checkConnection.docs.length != 0) {
+      if (checkConnection.docs.isNotEmpty) {
         flagNewConnection = false;
-        chat_id = checkConnection.docs[0].id; // id chat dari chats collection
+        chatId = checkConnection.docs[0].id;
       } else {
         flagNewConnection = true;
       }
     } else {
-      //user belum pernah chat dengan siapapun
       flagNewConnection = true;
     }
 
-    // FIXING
     if (flagNewConnection) {
-      // cek dari chats collection => connections => mereka berdua...
       final chatsDocs = await chats.where(
         "connections",
         whereIn: [
@@ -371,27 +319,21 @@ class AuthController extends GetxController {
         ],
       ).get();
 
-      if (chatsDocs.docs.length != 0) {
-        // terdapat data chats (sudah ada koneksi antara mereka berdua)
+      if (chatsDocs.docs.isNotEmpty) {
         final chatDataId = chatsDocs.docs[0].id;
         final chatsData = chatsDocs.docs[0].data() as Map<String, dynamic>;
 
-        await users
-            .doc(_currentUser!.email)
-            .collection("chats")
-            .doc(chatDataId)
-            .set({
+        await users.doc(_currentUser!.email).collection("chats").doc(chatDataId).set({
           "connection": friendEmail,
           "lastTime": chatsData["lastTime"],
           "total_unread": 0,
         });
 
-        final listChats =
-            await users.doc(_currentUser!.email).collection("chats").get();
+        final listChats = await users.doc(_currentUser!.email).collection("chats").get();
 
-        if (listChats.docs.length != 0) {
-          List<ChatUser> dataListChats = List<ChatUser>.empty();
-          listChats.docs.forEach((element) {
+        if (listChats.docs.isNotEmpty) {
+          List<ChatUser> dataListChats = [];
+          for (var element in listChats.docs) {
             var dataDocChat = element.data();
             var dataDocChatId = element.id;
             dataListChats.add(ChatUser(
@@ -400,7 +342,7 @@ class AuthController extends GetxController {
               lastTime: dataDocChat["lastTime"],
               total_unread: dataDocChat["total_unread"],
             ));
-          });
+          }
           user.update((user) {
             user!.chats = dataListChats;
           });
@@ -410,11 +352,8 @@ class AuthController extends GetxController {
           });
         }
 
-        chat_id = chatDataId;
-
-        user.refresh();
+        chatId = chatDataId;
       } else {
-        // buat baru collection jika user dan admin belum ada koneksi
         final newChatDoc = await chats.add({
           "connections": [
             _currentUser!.email,
@@ -424,22 +363,17 @@ class AuthController extends GetxController {
 
         await chats.doc(newChatDoc.id).collection("chat");
 
-        await users
-            .doc(_currentUser!.email)
-            .collection("chats")
-            .doc(newChatDoc.id)
-            .set({
+        await users.doc(_currentUser!.email).collection("chats").doc(newChatDoc.id).set({
           "connection": friendEmail,
           "lastTime": date,
           "total_unread": 0,
         });
 
-        final listChats =
-            await users.doc(_currentUser!.email).collection("chats").get();
+        final listChats = await users.doc(_currentUser!.email).collection("chats").get();
 
-        if (listChats.docs.length != 0) {
-          List<ChatUser> dataListChats = List<ChatUser>.empty();
-          listChats.docs.forEach((element) {
+        if (listChats.docs.isNotEmpty) {
+          List<ChatUser> dataListChats = [];
+          for (var element in listChats.docs) {
             var dataDocChat = element.data();
             var dataDocChatId = element.id;
             dataListChats.add(ChatUser(
@@ -448,7 +382,7 @@ class AuthController extends GetxController {
               lastTime: dataDocChat["lastTime"],
               total_unread: dataDocChat["total_unread"],
             ));
-          });
+          }
           user.update((user) {
             user!.chats = dataListChats;
           });
@@ -458,39 +392,32 @@ class AuthController extends GetxController {
           });
         }
 
-        chat_id = newChatDoc.id;
-
-        user.refresh();
+        chatId = newChatDoc.id;
       }
-    }
 
-    print(chat_id);
-
-    final updateStatusChat = await chats
-        .doc(chat_id)
-        .collection("chat")
-        .where("isRead", isEqualTo: false)
-        .where("penerima", isEqualTo: _currentUser!.email)
-        .get();
-
-    updateStatusChat.docs.forEach((element) async {
-      element.id;
-      await chats
-          .doc(chat_id)
+      final updateStatusChat = await chats
+          .doc(chatId)
           .collection("chat")
-          .doc(element.id)
-          .update({"isRead": true});
-    });
+          .where("isRead", isEqualTo: false)
+          .where("penerima", isEqualTo: _currentUser!.email)
+          .get();
 
-    await users
-        .doc(_currentUser!.email)
-        .collection("chats")
-        .doc(chat_id)
-        .update({"total_unread": 0});
+      for (var element in updateStatusChat.docs) {
+        await chats.doc(chatId).collection("chat").doc(element.id).update({
+          "isRead": true,
+        });
+      }
 
-    Get.toNamed(Routes.CHAT, arguments: {
-      "chat_id": "$chat_id",
-      "friendEmail": friendEmail,
-    });
+      await users
+          .doc(_currentUser!.email)
+          .collection("chats")
+          .doc(chatId)
+          .update({"total_unread": 0});
+
+      Get.toNamed(Routes.CHAT, arguments: {
+        "chat_id": chatId,
+        "friendEmail": friendEmail,
+      });
+    }
   }
 }
