@@ -61,22 +61,30 @@ class AduanPageView extends GetView<AduanPageController> {
     bool readOnly = false,
     void Function(String)? onChanged,
   }) {
-    return CupertinoTextField(
+    return TextField(
       controller: controller,
       maxLines: maxLines,
       minLines: minLines,
       keyboardType: keyboardType,
-      placeholder: label,
-      placeholderStyle: TextStyle(
-        color: CupertinoColors.placeholderText,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+          color: Colors.grey[600],
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: Colors.grey[400]!,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: Colors.blue,
+          ),
+        ),
       ),
       onChanged: onChanged,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: CupertinoColors.separator,
-        ),
-        borderRadius: BorderRadius.circular(5),
-      ),
     );
   }
 
@@ -110,124 +118,149 @@ class AduanPageView extends GetView<AduanPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Buat aduan'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Buat aduan'),
+        backgroundColor: Colors.blue,
       ),
-      child: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.all(10),
-          children: [
-            _buildTextField(
-              label: 'Judul',
-              onChanged: (judul) => controller.judul.value = judul,
+      body: ListView(
+        padding: EdgeInsets.all(20),
+        children: [
+          _buildTextField(
+            label: 'Judul',
+            onChanged: (judul) => controller.judul.value = judul,
+          ),
+          SizedBox(height: 20),
+          _buildTextField(
+            label: 'Deskripsi',
+            onChanged: (deskripsi) => controller.deskripsi.value = deskripsi,
+            minLines: 5,
+            maxLines: 10,
+            keyboardType: TextInputType.multiline,
+          ),
+          SizedBox(height: 20),
+          Text(
+            'Kategori',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-            SizedBox(height: 10),
-            _buildTextField(
-              label: 'Deskripsi',
-              onChanged: (deskripsi) => controller.deskripsi.value = deskripsi,
-              minLines: 5,
-              maxLines: 10,
-              keyboardType: TextInputType.multiline,
-            ),
-            SizedBox(height: 10),
-            SizedBox(height: 10),
-            Text(
-              'Kategori',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            SizedBox(height: 10),
-            GestureDetector(
-              onTap: () {
-                showCupertinoModalPopup(
-                  context: context,
-                  builder: (context) {
-                    return SizedBox(
-                      height: 250,
-                      child: _buildCategoryPicker(),
-                    );
-                  },
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.5),
-                  ),
+          ),
+          SizedBox(height: 10),
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return SizedBox(
+                    height: 250,
+                    child: _buildCategoryPicker(),
+                  );
+                },
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Colors.grey[400]!,
                 ),
-                child: Obx(
-                  () => Text(
-                    controller.kategori.value,
-                    style: TextStyle(fontSize: 18),
-                  ),
+              ),
+              child: Obx(
+                () => Text(
+                  controller.kategori.value,
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
             ),
-            SizedBox(height: 10),
-            _buildTextField(
-              controller: null,
-              label: 'URL Gambar (opsional)',
-              onChanged: (url) => controller.gambarUrl.value = url,
-            ),
-            SizedBox(height: 10),
-            _selectedImage != null
-                ? Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 2,
-                      ),
+          ),
+          SizedBox(height: 20),
+          _buildTextField(
+            controller: null,
+            label: 'URL Gambar (opsional)',
+            onChanged: (url) => controller.gambarUrl.value = url,
+          ),
+          SizedBox(height: 20),
+          _selectedImage != null
+              ? Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Colors.grey[400]!,
+                      width: 2,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.file(
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.file(
                           _selectedImage!,
-                          width: 80,
-                          height: 80,
+                          width: 100,
+                          height: 100,
                           fit: BoxFit.cover,
                         ),
-                        SizedBox(height: 8),
-                        GestureDetector(
-                          onTap: _removeImage,
-                          child: Text(
-                            'Hapus Gambar',
-                            style: TextStyle(color: Colors.red),
+                      ),
+                      SizedBox(height: 10),
+                      GestureDetector(
+                        onTap: _removeImage,
+                        child: Text(
+                          'Hapus Gambar',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ],
-                    ),
-                  )
-                : SizedBox.shrink(),
-            ElevatedButton.icon(
-              onPressed: _pickImage,
-              icon: Icon(Icons.image),
-              label: Text('Pilih Gambar'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                controller.gambarUrl.value = await _uploadImage() ?? '';
-              },
-              child: Text('Upload Gambar'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: () => controller.kirimAduan(),
-              icon: Icon(Icons.send),
-              label: Text('Kirim'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green.shade800,
-                fixedSize: Size(double.infinity, 50.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
+                      ),
+                    ],
+                  ),
+                )
+              : SizedBox.shrink(),
+          SizedBox(height: 20),
+          ElevatedButton.icon(
+            onPressed: _pickImage,
+            icon: Icon(Icons.image),
+            label: Text('Pilih Gambar'),
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black, 
+              backgroundColor: Colors.grey[200],
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
-          ],
-        ),
+          ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () async {
+              controller.gambarUrl.value = await _uploadImage() ?? '';
+            },
+            child: Text('Upload Gambar'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          SizedBox(height: 30),
+          ElevatedButton.icon(
+            onPressed: () => controller.kirimAduan(),
+            icon: Icon(Icons.send),
+            label: Text('Kirim'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
