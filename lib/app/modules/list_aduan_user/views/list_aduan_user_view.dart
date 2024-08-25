@@ -19,7 +19,35 @@ class ListAduanUserView extends GetView<ListAduanUserController> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return Center(child: Text('Tidak ada data'));
+                return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.inbox,
+            size: 80,
+            color: Colors.grey[400],
+          ),
+          SizedBox(height: 20),
+          Text(
+            'Tidak ada data',
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.grey[600],
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            'Masukkan aduan Anda',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[500],
+            ),
+          ),
+        ],
+      ),
+    );
               }
               var listAllAduan = snapshot.data!.docs;
               return ListView.builder(

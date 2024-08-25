@@ -18,7 +18,7 @@ class AduanPageView extends GetView<AduanPageController> {
 
   // Method untuk memilih gambar dari galeri
   Future<void> _pickImage() async {
-    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedImage != null) {
       // Set state untuk menampilkan gambar di layar

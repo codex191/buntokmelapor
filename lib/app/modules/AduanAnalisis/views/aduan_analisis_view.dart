@@ -114,20 +114,14 @@ class AduanAnalisisView extends GetView<AduanAnalisisController> {
                                     primaryXAxis: CategoryAxis(),
                                     title: ChartTitle(
                                         text: 'Jumlah Aduan Berdasarkan Bulan'),
-                                    series: <ChartSeries>[
-                                      ColumnSeries<Map<String, dynamic>,
-                                          String>(
-                                        dataSource: controller.chartDataByMonth,
-                                        xValueMapper:
-                                            (Map<String, dynamic> data, _) =>
-                                                data['bulan'] as String,
-                                        yValueMapper:
-                                            (Map<String, dynamic> data, _) =>
-                                                data['jumlah'] as int,
-                                        dataLabelSettings:
-                                            DataLabelSettings(isVisible: true),
-                                      )
-                                    ],
+                                      series: <CartesianSeries<Map<String, dynamic>, String>>[
+    ColumnSeries<Map<String, dynamic>, String>(
+      dataSource: controller.chartDataByMonth,
+      xValueMapper: (Map<String, dynamic> data, _) => data['bulan'] as String,
+      yValueMapper: (Map<String, dynamic> data, _) => data['jumlah'] as int,
+      dataLabelSettings: const DataLabelSettings(isVisible: true),
+    )
+  ],
                                   ),
                                 )
                               : Center(child: CircularProgressIndicator()),
@@ -140,20 +134,14 @@ class AduanAnalisisView extends GetView<AduanAnalisisController> {
                                     primaryXAxis: CategoryAxis(),
                                     title: ChartTitle(
                                         text: 'Jumlah Aduan Berdasarkan Tahun'),
-                                    series: <ChartSeries>[
-                                      ColumnSeries<Map<String, dynamic>,
-                                          String>(
-                                        dataSource: controller.chartDataByYear,
-                                        xValueMapper:
-                                            (Map<String, dynamic> data, _) =>
-                                                data['tahun'] as String,
-                                        yValueMapper:
-                                            (Map<String, dynamic> data, _) =>
-                                                data['jumlah'] as int,
-                                        dataLabelSettings:
-                                            DataLabelSettings(isVisible: true),
-                                      )
-                                    ],
+                                      series: <CartesianSeries<Map<String, dynamic>, String>>[
+    ColumnSeries<Map<String, dynamic>, String>(
+      dataSource: controller.chartDataByYear,
+      xValueMapper: (Map<String, dynamic> data, _) => data['tahun'] as String,
+      yValueMapper: (Map<String, dynamic> data, _) => data['jumlah'] as int,
+      dataLabelSettings: const DataLabelSettings(isVisible: true),
+    )
+  ],
                                   ),
                                 )
                               : Center(child: CircularProgressIndicator()),

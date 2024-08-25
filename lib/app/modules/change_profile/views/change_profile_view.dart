@@ -37,7 +37,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
           child: ListView(
             children: [
               AvatarGlow(
-                endRadius: 75,
+                
                 glowColor: Colors.black,
                 duration: Duration(seconds: 2),
                 child: Container(

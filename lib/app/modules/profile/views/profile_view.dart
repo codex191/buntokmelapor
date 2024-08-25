@@ -19,7 +19,7 @@ class ProfileView extends GetView<ProfileController> {
             onPressed: () => Get.back(),
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
           actions: [
@@ -55,7 +55,7 @@ class ProfileView extends GetView<ProfileController> {
               child: Column(
                 children: [
                   AvatarGlow(
-                    endRadius: 75,
+                    
                     glowColor: Colors.black,
                     duration: Duration(seconds: 2),
                     child: Container(
